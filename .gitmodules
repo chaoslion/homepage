@@ -1,0 +1,3 @@
+[submodule "content"]
+	path = content
+	url = ssh://git@host-node-develop.home.jaehnel.info:2222/alexander/site-alex-content.git

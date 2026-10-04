@@ -1,0 +1,176 @@
+<script lang="ts">
+  import { onMount } from "svelte";
+
+  import { siteConfig } from "#content";
+
+  interface Props {
+    url: URL;
+    footerElement: string;
+  }
+
+  let { url, footerElement }: Props = $props();
+
+  let fabHidden = $state(false);
+
+  onMount(() => {
+    const footer = document.querySelector(footerElement);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        fabHidden = entry.isIntersecting;
+      },
+      { threshold: 0.25 },
+    );
+    if (footer) observer.observe(footer);
+    return () => observer.disconnect();
+  });
+
+  let menuStateOpen = $state(false);
+
+  let scrollToTopVisible = $state(true);
+
+  let linksListModalVisible = $state(false);
+
+  let pageUrlShareModalVisible = $state(false);
+  let pageUrlShareContent = $derived(url.toString());
+  let pageUrlShareNative = $state(false);
+
+  onMount(() => {
+    pageUrlShareNative = !!navigator.share;
+  });
+
+  $effect(() => {
+    if (menuStateOpen) {
+      scrollToTopVisible = window.scrollY !== 0;
+    }
+  });
+
+  function scrollToTop() {
+    menuStateOpen = false;
+    window.scrollTo({
+      top: 0,
+    });
+  }
+
+  function linksListCallback() {
+    menuStateOpen = false;
+    linksListModalVisible = true;
+  }
+
+  async function pageUrlShareCallback() {
+    menuStateOpen = false;
+    if (pageUrlShareNative) {
+      try {
+        await navigator.share({
+          title: siteConfig.title,
+          text: siteConfig.description,
+          url: pageUrlShareContent,
+        });
+        return;
+      } catch (error) {
+        if (error instanceof Error && error.name === "AbortError") {
+          return;
+        }
+      }
+    }
+    pageUrlShareModalVisible = true;
+  }
+
+  // let switchUserThemeButtons: Record<string, Component> = $state({
+  //   dark: MoonSolid,
+  //   light: SunSolid,
+  //   auto: DesktopPcSolid,
+  // });
+</script>
+
+{#if false}
+  <div
+    class="dock dock-xs backdrop-blur-xs bg-base-100/25 w-full md:w-1/2 md:rounded-full md:mb-4 md:left-1/2 md:-translate-x-1/2"
+  >
+    <button>
+      <svg
+        class="size-[1.2em]"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        ><g fill="currentColor" stroke-linejoin="miter" stroke-linecap="butt"
+          ><polyline
+            points="1 11 12 2 23 11"
+            fill="none"
+            stroke="currentColor"
+            stroke-miterlimit="10"
+            stroke-width="2"
+          ></polyline><path
+            d="m5,13v7c0,1.105.895,2,2,2h10c1.105,0,2-.895,2-2v-7"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="square"
+            stroke-miterlimit="10"
+            stroke-width="2"
+          ></path><line
+            x1="12"
+            y1="22"
+            x2="12"
+            y2="18"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="square"
+            stroke-miterlimit="10"
+            stroke-width="2"
+          ></line></g
+        ></svg
+      >
+    </button>
+
+    <div class="join">
+      <progress class="progress" value="40" max="100"></progress>
+      <select class="select">
+        <option disabled selected>Pick a color</option>
+        <option>Crimson</option>
+        <option>Amber</option>
+        <option>Velvet</option>
+      </select>
+    </div>
+
+    <button>
+      <svg
+        class="size-[1.2em]"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        ><g fill="currentColor" stroke-linejoin="miter" stroke-linecap="butt"
+          ><circle
+            cx="12"
+            cy="12"
+            r="3"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="square"
+            stroke-miterlimit="10"
+            stroke-width="2"
+          ></circle><path
+            d="m22,13.25v-2.5l-2.318-.966c-.167-.581-.395-1.135-.682-1.654l.954-2.318-1.768-1.768-2.318.954c-.518-.287-1.073-.515-1.654-.682l-.966-2.318h-2.5l-.966,2.318c-.581.167-1.135.395-1.654.682l-2.318-.954-1.768,1.768.954,2.318c-.287.518-.515,1.073-.682,1.654l-2.318.966v2.5l2.318.966c.167.581.395,1.135.682,1.654l-.954,2.318,1.768,1.768,2.318-.954c.518.287,1.073.515,1.654.682l.966,2.318h2.5l.966-2.318c.581-.167,1.135-.395,1.654-.682l2.318.954,1.768-1.768-.954-2.318c.287-.518.515-1.073.682-1.654l2.318-.966Z"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="square"
+            stroke-miterlimit="10"
+            stroke-width="2"
+          ></path></g
+        ></svg
+      >
+    </button>
+  </div>
+{/if}
+<!-- class:opacity-0={fabHidden} -->
+
+<!-- class:-translate-y-20={fabHidden}
+  class:md:-translate-y-12={fabHidden} -->
+<div class="fab fab-flower transition-all duration-300">
+  <div tabindex="0" role="button" class="btn btn-lg btn-circle btn-primary">
+    F
+  </div>
+
+  <button class="fab-main-action btn btn-circle btn-lg">M</button>
+
+  <button class="btn btn-lg btn-circle">A</button>
+  <button class="btn btn-lg btn-circle">B</button>
+  <button class="btn btn-lg btn-circle">C</button>
+  <button class="btn btn-lg btn-circle">D</button>
+</div>

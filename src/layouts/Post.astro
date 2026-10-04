@@ -1,0 +1,226 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+import PostsPreviewCard from '#/components/blocks/PostsPreviewCard.svelte';
+import PostsPreviewGrid from '#/components/blocks/PostsPreviewGrid.svelte';
+import { HeadingFancy } from '#/components/ui';
+import {
+  filterPostsCollectionBySeries,
+  getBlogPostsCollectionSorted,
+  getPostsRelatedCollection,
+  getResourcesCollectionItem,
+} from '#/data/blog';
+import type { PostsCollectionItem } from '#/types/collections';
+import type { HeadingFancyProps, TreeLinkItem } from '#/types/components';
+import { siteConfig } from '#content';
+
+import Base from './Base.astro';
+import Container from './Base/Container.svelte';
+import ContainerConstrain from './Base/ContainerConstrain.svelte';
+import PostIndexList from './Post/IndexList.svelte';
+import PostPaginate from './Post/Paginate.svelte';
+import PostResourcesList from './Post/ResourcesList.svelte';
+import PostSeriesList from './Post/SeriesList.svelte';
+import PostWrapperCustomAsciinema from './Post/Wrapper/CustomAsciinema.astro';
+import PostWrapperCustomCodeBlock from './Post/Wrapper/CustomCodeBlock.astro';
+import PostWrapperCustomFileMenu from './Post/Wrapper/CustomFileMenu.astro';
+import PostWrapperCustomFileTree from './Post/Wrapper/CustomFileTree.astro';
+import PostWrapperCustomImage from './Post/Wrapper/CustomImage.astro';
+import PostWrapperCustomImageResource from './Post/Wrapper/CustomImageResource.astro';
+import PostWrapperCustomLink from './Post/Wrapper/CustomLink.astro';
+import PostWrapperCustomLinkHash from './Post/Wrapper/CustomLinkHash.astro';
+import PostWrapperCustomLinkPost from './Post/Wrapper/CustomLinkPost.astro';
+import PostWrapperCustomLinkResource from './Post/Wrapper/CustomLinkResource.astro';
+import PostWrapperCustomMathBlock from './Post/Wrapper/CustomMathBlock.astro';
+import PostWrapperCustomMathInline from './Post/Wrapper/CustomMathInline.astro';
+import PostWrapperCustomQuote from './Post/Wrapper/CustomQuote.astro';
+import PostWrapperCustomYoutube from './Post/Wrapper/CustomYoutube.astro';
+import PostWrapperHtmlImg from './Post/Wrapper/HtmlImg.astro';
+import PostWrapperHtmlTable from './Post/Wrapper/HtmlTable.astro';
+
+interface Props {
+  post: PostsCollectionItem;
+}
+
+function overrideComponents() {
+  const wrapperComponents = {
+    img: PostWrapperHtmlImg,
+    table: PostWrapperHtmlTable,
+  };
+  const wrapperCustomComponents = {
+    CustomAsciinema: PostWrapperCustomAsciinema,
+    CustomCodeBlock: PostWrapperCustomCodeBlock,
+    CustomFileMenu: PostWrapperCustomFileMenu,
+    CustomFileTree: PostWrapperCustomFileTree,
+    CustomImage: PostWrapperCustomImage,
+    CustomImageResource: PostWrapperCustomImageResource,
+    CustomLink: PostWrapperCustomLink,
+    CustomLinkResource: PostWrapperCustomLinkResource,
+    CustomLinkHash: PostWrapperCustomLinkHash,
+    CustomLinkPost: PostWrapperCustomLinkPost,
+    CustomMathBlock: PostWrapperCustomMathBlock,
+    CustomMathInline: PostWrapperCustomMathInline,
+    CustomQuote: PostWrapperCustomQuote,
+    CustomYoutube: PostWrapperCustomYoutube,
+  };
+
+  return {
+    ...wrapperComponents,
+    ...wrapperCustomComponents,
+  };
+}
+
+const { post } = Astro.props as Props;
+
+const postContent = await post.content();
+const { Content, headings } = postContent.artifact;
+
+const collection: PostsCollectionItem[] = await getBlogPostsCollectionSorted();
+
+const currentPostIndex = collection.findIndex(
+  (item) => item.slug === post.slug,
+);
+const prevPostLimit = currentPostIndex === 0;
+const nextPostLimit = currentPostIndex === collection.length - 1;
+
+const [prevPost, nextPost] = [
+  collection.at(prevPostLimit ? collection.length - 1 : currentPostIndex - 1)!,
+  collection.at(nextPostLimit ? 0 : currentPostIndex + 1)!,
+];
+
+// heading starts at 1, we count from 0, and we also ignore H1 (depth 1)
+let headingLinks: TreeLinkItem[] = headings
+  .filter(
+    (heading: MarkdownHeading) =>
+      heading.depth === 1 || heading.depth - 1 <= siteConfig.posts.maxTOCDepth,
+  )
+  .map((heading: MarkdownHeading) => ({
+    link: {
+      href: `#${heading.slug}`,
+      label: heading.text,
+    },
+    depth: heading.depth - 2,
+  }));
+
+const globalResourcesConsumed = await Promise.all(
+  postContent.resourcesConsumed.map(
+    async (i) => await getResourcesCollectionItem(i),
+  ),
+);
+
+for (const [href, label] of Object.entries(postContent.externalLinksConsumed)) {
+  globalResourcesConsumed.push({
+    id: href,
+    href,
+    label,
+    forceListing: false,
+  });
+}
+
+const relatedCollection = getPostsRelatedCollection(
+  collection,
+  post,
+  siteConfig.posts.maxRelated,
+);
+
+let appendixHeadings = new Map<string, HeadingFancyProps>();
+
+if (globalResourcesConsumed.length > 0) {
+  appendixHeadings.set('resources', {
+    id: `post-resources`,
+    title: 'Resources',
+  });
+}
+
+if (post.series) {
+  appendixHeadings.set('series', {
+    id: `post-series`,
+    title: 'Series',
+    preposition: 'on',
+    subtitle: post.series.title,
+  });
+}
+
+if (relatedCollection.length > 0) {
+  appendixHeadings.set('related', {
+    id: `post-related`,
+    title: 'See Also',
+  });
+}
+---
+
+<Base
+  title={post.title}
+  breadcrumbs={['Posts', post.title]}
+  description={post.summaryShort}
+  langGermanLegacy={post.isLegacy}
+  supportsSearchIndex={true}
+  supportsIndex={true}
+>
+  <Container supportsSearchIndex={true}>
+    <ContainerConstrain prose={true} class="lg:gap-12">
+      <HeadingFancy title={post.title} tag="h1" />
+      <PostsPreviewCard client:load {post} />
+
+      <PostIndexList
+        postId={post.slugName}
+        headingLinks={headingLinks.length > 0
+          ? headingLinks
+          : [{ depth: 0, link: { href: '#x-post', label: 'Main' } }]}
+        headingLinksAdditional={[...appendixHeadings.values()].map((item) => ({
+          link: {
+            href: `#${item.id}`,
+            label: item.title,
+          },
+          depth: 0,
+        }))}
+      />
+    </ContainerConstrain>
+  </Container>
+
+  <Container supportsSearchIndex={true}>
+    <div class="mx-auto max-w-prose">
+      <div class="divider"></div>
+    </div>
+    <div
+      id="x-post"
+      class="prose prose-blockquote:not-italic prose-blockquote:border-l-accent mx-auto"
+      data-pswp-gallery
+    >
+      <Content components={overrideComponents()} />
+    </div>
+  </Container>
+
+  <Container>
+    <ContainerConstrain prose={true}>
+      <PostPaginate
+        prevPost={prevPost}
+        nextPost={nextPost}
+        prevPostLimit={prevPostLimit}
+        nextPostLimit={nextPostLimit}
+      />
+    </ContainerConstrain>
+  </Container>
+
+  {
+    [...appendixHeadings.entries()].map(([key, value]) => (
+      <Container>
+        <ContainerConstrain>
+          <HeadingFancy {...value} />
+          {key === 'resources' && (
+            <PostResourcesList resources={globalResourcesConsumed} />
+          )}
+          {key === 'series' && (
+            <PostSeriesList
+              {post}
+              posts={filterPostsCollectionBySeries(collection, post.series!)}
+            />
+          )}
+          {key === 'related' && (
+            <PostsPreviewGrid client:visible posts={relatedCollection} />
+          )}
+        </ContainerConstrain>
+      </Container>
+    ))
+  }
+</Base>

@@ -1,0 +1,24 @@
+---
+import Changelog from '#/components/blocks/Changelog.svelte';
+import WindowTerminal from '#/components/blocks/WindowTerminal.svelte';
+import WindowTerminalCommand from '#/components/blocks/WindowTerminalCommand.svelte';
+import WindowTerminalStdout from '#/components/blocks/WindowTerminalStdout.svelte';
+import { HeadingFancy } from '#/components/ui';
+import LayoutDefault from '#/layouts/Default.astro';
+import { siteConfig } from '#content';
+---
+
+<LayoutDefault title="Changelog" supportsIndex={true}>
+  <HeadingFancy tag="h1" title="Changelog" />
+
+  <WindowTerminal title="Versions">
+    {
+      Object.entries(siteConfig.build.repos).map(([repo, item]) => (
+        <WindowTerminalCommand command={`git describe ${repo}`} />
+        <WindowTerminalStdout line={item.release} muted={false} />
+      ))
+    }
+  </WindowTerminal>
+
+  <Changelog id="x-changelog-main" infos={siteConfig.build.repos} />
+</LayoutDefault>

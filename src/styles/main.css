@@ -1,0 +1,73 @@
+@plugin '@tailwindcss/typography';
+@plugin 'daisyui' {
+  themes:
+    fantasy --default,
+    dracula;
+}
+@plugin '@iconify/tailwind4' {
+  prefixes: devicon, mdi, ph;
+}
+@plugin 'tailwindcss-debug-screens';
+
+@custom-variant dark (&:where([data-theme=dracula], [data-theme=dracula] *));
+
+@import 'photoswipe/dist/photoswipe.css';
+@import 'asciinema-player/dist/bundle/asciinema-player.css';
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import './custom.css';
+@import './shiki.css';
+
+/* add content for tailwind scanning (submodules are initially ignored) */
+@source '../../content';
+/*always include tailwind classes*/
+
+@theme {
+  --animate-crt-flicker: crt-flicker 1s infinite;
+  --font-mono: var(--font-fira-code);
+  --font-sans: var(--font-geist);
+  --custom-font-title: var(--font-space-grotesk);
+}
+
+@layer base {
+  html {
+    scrollbar-gutter: stable;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--custom-font-title);
+  }
+
+  mjx-container[jax='SVG'] {
+    display: inline-block !important;
+    overflow: visible !important;
+  }
+
+  mjx-container[jax='SVG'] > svg {
+    display: inline-block !important;
+    overflow: visible !important;
+  }
+
+  figure mjx-container[jax='SVG'] {
+    display: block !important;
+  }
+
+  figure mjx-container[jax='SVG'] svg {
+    margin: 0 auto;
+  }
+
+  /* disable chrome cancel button */
+  input[type='search']::-webkit-search-cancel-button {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

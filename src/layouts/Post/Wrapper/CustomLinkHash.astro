@@ -1,0 +1,9 @@
+---
+import type { BlogLinkPropsInternalPostHash } from '#plugins-satteri';
+
+import AnchorPostHash from '../AnchorPostHash.svelte';
+
+const { label, ...hashProps } = Astro.props as BlogLinkPropsInternalPostHash;
+---
+
+<AnchorPostHash label={label} {...hashProps} />

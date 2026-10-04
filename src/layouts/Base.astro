@@ -1,0 +1,183 @@
+---
+// import { CustomCSSVariables } from '#/data/css.ts';
+import { SEO } from 'astro-seo';
+import { Font, getImage } from 'astro:assets';
+import { ClientRouter } from 'astro:transitions';
+
+import profileImage from '#/assets/images/profile.jpg';
+import { THEMEMANAGER_CONFIG } from '#/data/theme.svelte';
+import { siteConfig } from '#content';
+
+import BaseBreadcrumbs from './Base/Breadcrumbs.svelte';
+import Container from './Base/Container.svelte';
+import ContainerConstrain from './Base/ContainerConstrain.svelte';
+import BaseFooter from './Base/Footer.svelte';
+import BaseFooterBio from './Base/FooterBio.svelte';
+import BaseHeader from './Base/Header.svelte';
+import BaseHeaderNavbar from './Base/HeaderNavbar.svelte';
+import BaseSpinner from './Base/Spinner.svelte';
+
+import '../styles/main.css';
+
+import type { BaseProps, UrlPart } from '#/types/layouts';
+
+interface Props extends BaseProps {
+  langGermanLegacy?: boolean;
+}
+let {
+  title,
+  langGermanLegacy = false,
+  breadcrumbs,
+  description,
+  supportsSearchIndex = false,
+  supportsIndex = false,
+} = Astro.props as Props;
+
+const rssHref = new URL('rss.xml', Astro.site);
+
+const profileImageAvatar = await getImage({
+  src: profileImage,
+  format: 'webp',
+  height: 160,
+  width: 160,
+});
+
+let urlParts: UrlPart[] = Astro.url.pathname
+  .split('/')
+  .filter(Boolean)
+  .map((segment, i, arr) => ({
+    label: breadcrumbs?.[i] ?? segment,
+    href: '/' + arr.slice(0, i + 1).join('/'),
+  }));
+---
+
+<html
+  lang={langGermanLegacy ? 'de' : 'en'}
+  {...!supportsSearchIndex ? { 'data-rangefind-ignore': true } : {}}
+  class:list={[{ 'debug-screens': import.meta.env.DEV }]}
+>
+  <head>
+    <SEO
+      title={title}
+      titleDefault={siteConfig.title}
+      titleTemplate={`%s | ${siteConfig.title}`}
+      description={description ?? siteConfig.siteDescription}
+      noindex={!supportsIndex}
+      noarchive={true}
+      charset="utf-8"
+      extend={{
+        meta: [
+          {
+            name: 'viewport',
+            content:
+              'width=device-width, initial-scale=1.0, viewport-fit=cover',
+          },
+        ],
+        link: [
+          { rel: 'icon', href: '/favicon.ico' },
+          { rel: 'icon', type: 'image/svg+xml', href: '/static/favicon.svg' },
+          {
+            rel: 'alternate',
+            type: 'application/rss+xml',
+            title: siteConfig.title,
+            href: rssHref.toString(),
+          },
+          { rel: 'sitemap', href: '/site-index.xml' },
+        ],
+      }}
+    />
+    <script
+      is:inline
+      define:vars={{ config: THEMEMANAGER_CONFIG }}
+      data-astro-rerun
+    >
+      const browserMediaQuery = window.matchMedia(config.browserMediaQuery);
+      const localStorageSystemState = browserMediaQuery.matches
+        ? 'dark'
+        : config.stateFallbackValue;
+      const localStorageUserState = localStorage.getItem(config.storageValue);
+      const themeName =
+        config.themeNames[
+          localStorageUserState === null
+            ? localStorageSystemState
+            : localStorageUserState
+        ];
+      document.documentElement.setAttribute(config.htmlAttributeKey, themeName);
+    </script>
+    <Font cssVariable="--font-fira-code" preload={true} />
+    <Font cssVariable="--font-geist" preload={true} />
+    <Font cssVariable="--font-space-grotesk" preload={true} />
+    <ClientRouter />
+  </head>
+  <body class="bg-base-100 flex min-h-dvh min-w-[320px] flex-col antialiased">
+    <noscript>
+      <img
+        src={siteConfig.trackingPixelUrl}
+        width="1"
+        height="1"
+        style="display:none"
+        alt="stats"
+      />
+    </noscript>
+    <header>
+      <BaseHeader client:load />
+      <BaseHeaderNavbar client:load url={Astro.url} />
+      <noscript>
+        <div class="container mx-auto my-2">
+          <div role="alert" class="alert alert-error text-xl font-bold">
+            <span>
+              It looks like JavaScript is disabled. Page navigation is degraded,
+              you can still read the content, but some interactive elements may
+              be missing or behave unexpectedly.
+            </span>
+          </div>
+        </div>
+      </noscript>
+    </header>
+    <main class="my-6 flex grow flex-col gap-6 lg:my-12">
+      {
+        urlParts.length > 1 && (
+          <Container>
+            <ContainerConstrain>
+              <BaseBreadcrumbs {urlParts} />
+            </ContainerConstrain>
+          </Container>
+        )
+      }
+      <slot />
+    </main>
+    <footer>
+      <Container class="bg-base-200 py-2">
+        <BaseFooterBio
+          client:visible
+          avatar={profileImageAvatar}
+          url={Astro.url}
+        />
+      </Container>
+      <Container
+        class="bg-neutral text-neutral-content border-t-accent border-t-4 py-4"
+      >
+        <BaseFooter client:visible />
+      </Container>
+    </footer>
+    <BaseSpinner client:load />
+    <script>
+      import 'rangefind/element';
+
+      import { siteInit } from '#/data/site';
+
+      await siteInit();
+    </script>
+    {
+      !import.meta.env.DEV && (
+        <script
+          is:inline
+          type="text/partytown"
+          src={siteConfig.trackingUrl}
+          data-astro-rerun
+          data-website-id={siteConfig.trackingId}
+        />
+      )
+    }
+  </body>{}
+</html>

@@ -1,0 +1,23 @@
+---
+import AsciinemaPlayer from '#/components/blocks/AsciinemaPlayer.svelte';
+import { FigureWithCaption } from '#/components/ui';
+
+interface Props {
+  vid: string;
+  label: string;
+}
+
+const { vid, label } = Astro.props as Props;
+---
+
+<FigureWithCaption
+  class="flex flex-col items-center gap-2"
+  captionIcon="mdi--console"
+  caption={label}
+>
+  <AsciinemaPlayer
+    client:load
+    src={`https://asciinema.jaehnel.info/a/${vid}.cast`}
+    class="w-full"
+  />
+</FigureWithCaption>

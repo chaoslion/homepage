@@ -1,0 +1,26 @@
+---
+interface Props {
+  src: string;
+}
+const { src } = Astro.props as Props;
+const excludePatterns = [
+  // only units
+  /^\\units\[[^\]]+\]\{[^\}]+\}$/,
+  /^\\unitsrange(DE)?(\{[^\}]+\}){3}$/,
+  // only variables
+  /^[a-zA-Z]_[a-zA-Z]+$/,
+];
+const excludePatternMatch = excludePatterns.map((pattern) =>
+  src.match(pattern),
+);
+---
+
+{
+  excludePatternMatch.some((match) => match !== null) ? (
+    <slot />
+  ) : (
+    <code>
+      <slot />
+    </code>
+  )
+}

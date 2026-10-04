@@ -1,0 +1,14 @@
+.env
+/.astro
+/.claude
+/.pnpm-store
+/.python-version
+/.venv
+/.zed
+/assets-*.tar.gz
+/assets-*.pdf
+/dist*
+/node_modules
+/public
+/src/**/*assets
+__pycache__

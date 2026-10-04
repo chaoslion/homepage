@@ -1,0 +1,38 @@
+---
+import { getImage } from 'astro:assets';
+
+import previewImage from '#/assets/unsplash/play.jpg';
+import { Anchor, FigureWithCaption } from '#/components/ui';
+import ImageHint from '#/components/ui/ImageHint.svelte';
+import { siteConfig } from '#content';
+
+import Image from './Image.astro';
+
+interface Props {
+  vid: string;
+  label: string;
+}
+
+const { vid, label } = Astro.props as Props;
+
+const image = await getImage({
+  src: previewImage,
+  width: Math.min(siteConfig.posts.thumbnailWidth, previewImage.width),
+  format: 'webp',
+  quality: 80,
+});
+---
+
+<FigureWithCaption
+  class="flex flex-col items-center gap-2"
+  captionIcon="mdi--youtube"
+  caption={label}
+>
+  <Anchor
+    href={`https://www.youtube.com/watch?v=${vid}`}
+    class="group not-prose relative"
+  >
+    <Image src={image} label={`Video Preview ${vid}`} />
+    <ImageHint label="Watch on YouTube" />
+  </Anchor>
+</FigureWithCaption>

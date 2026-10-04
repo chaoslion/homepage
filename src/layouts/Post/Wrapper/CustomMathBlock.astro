@@ -1,0 +1,16 @@
+---
+import { FigureWithCaption } from '#/components/ui';
+import type { BlogCodeBlockProps } from '#plugins-satteri';
+
+const { id, label } = Astro.props as BlogCodeBlockProps;
+---
+
+<FigureWithCaption
+  figureId={id}
+  class="flex flex-col items-center gap-2"
+  caption={label}
+>
+  <div class="w-full overflow-x-auto text-center">
+    <slot />
+  </div>
+</FigureWithCaption>

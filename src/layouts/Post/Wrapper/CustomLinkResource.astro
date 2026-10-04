@@ -1,0 +1,11 @@
+---
+import { getResourcesCollectionItem } from '#/data/blog';
+import type { BlogLinkPropsInternalResource } from '#plugins-satteri';
+
+import AnchorResource from '../AnchorResource.svelte';
+
+const { label, resourceId } = Astro.props as BlogLinkPropsInternalResource;
+const resource = await getResourcesCollectionItem(resourceId);
+---
+
+<AnchorResource {resource} {label} />

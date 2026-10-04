@@ -1,0 +1,63 @@
+---
+import type { Page, PaginateFunction } from 'astro';
+
+import PostsPreviewGrid from '#/components/blocks/PostsPreviewGrid.svelte';
+import { HeadingFancy } from '#/components/ui';
+import {
+  filterPostsCollectionByCategory,
+  getBlogPostsCollectionSorted,
+  getCategoriesCollection,
+} from '#/data/blog';
+import LayoutPaginate from '#/layouts/Paginate.astro';
+import type {
+  CategoriesCollectionItem,
+  PostsCollectionItem,
+} from '#/types/collections';
+import { siteConfig } from '#content';
+
+export async function getStaticPaths({
+  paginate,
+}: {
+  paginate: PaginateFunction;
+}) {
+  const categoriesCollection: CategoriesCollectionItem[] =
+    await getCategoriesCollection();
+  const postsCollection: PostsCollectionItem[] =
+    await getBlogPostsCollectionSorted();
+  return categoriesCollection.flatMap(
+    (categoryItem: CategoriesCollectionItem) => {
+      const postsCollectionByCategory = filterPostsCollectionByCategory(
+        postsCollection,
+        categoryItem,
+      );
+      return paginate(postsCollectionByCategory, {
+        params: { name: categoryItem.id },
+        props: {
+          categoryItem: categoryItem,
+        },
+        pageSize: siteConfig.posts.previewPagination,
+      });
+    },
+  );
+}
+
+interface Props {
+  page: Page<PostsCollectionItem>;
+  categoryItem: CategoriesCollectionItem;
+}
+interface Params {
+  name: string;
+}
+const { page, categoryItem } = Astro.props as Props;
+const { name: _name } = Astro.params as Params;
+---
+
+<LayoutPaginate
+  title="Categories"
+  breadcrumbs={['Explore', `Category: ${categoryItem.title}`]}
+  href={categoryItem.href}
+  paginatePage={page}
+>
+  <HeadingFancy title="Posts" preposition="in" subtitle={categoryItem.title} />
+  <PostsPreviewGrid client:load posts={page.data} />
+</LayoutPaginate>

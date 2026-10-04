@@ -1,0 +1,37 @@
+---
+import type { Page, PaginateFunction } from 'astro';
+
+import PostsPreviewGrid from '#/components/blocks/PostsPreviewGrid.svelte';
+import { HeadingFancy } from '#/components/ui';
+import { getBlogPostsCollectionSorted } from '#/data/blog';
+import LayoutPaginate from '#/layouts/Paginate.astro';
+import type { PostsCollectionItem } from '#/types/collections';
+import { siteConfig } from '#content';
+
+export async function getStaticPaths({
+  paginate,
+}: {
+  paginate: PaginateFunction;
+}) {
+  const collection: PostsCollectionItem[] =
+    await getBlogPostsCollectionSorted();
+  return paginate(collection, {
+    pageSize: siteConfig.posts.previewPagination,
+  });
+}
+
+interface Props {
+  page: Page<PostsCollectionItem>;
+}
+const { page } = Astro.props as Props;
+---
+
+<LayoutPaginate
+  href="/posts"
+  paginatePage={page}
+  title="Posts"
+  breadcrumbs={['Posts']}
+>
+  <HeadingFancy title="Browse All Posts" />
+  <PostsPreviewGrid client:load posts={page.data} />
+</LayoutPaginate>

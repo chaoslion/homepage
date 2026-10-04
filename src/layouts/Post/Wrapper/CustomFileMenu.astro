@@ -1,0 +1,22 @@
+---
+interface Props {
+  path: string;
+}
+
+const { path } = Astro.props as Props;
+const segments = path.split('/');
+---
+
+<div class="not-prose breadcrumbs mx-auto w-fit">
+  <ul>
+    {
+      segments.map((segment) => (
+        <li>
+          <div class="badge badge-ghost cursor-auto select-none hover:no-underline">
+            {segment}
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</div>

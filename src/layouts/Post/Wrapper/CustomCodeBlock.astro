@@ -1,0 +1,24 @@
+---
+import WindowCode from '#/components/blocks/WindowCode.svelte';
+import { siteConfig } from '#content';
+import type { BlogCodeBlockProps } from '#plugins-satteri';
+
+interface Props extends BlogCodeBlockProps {
+  lang: string;
+}
+
+const { lang, ...restProps } = Astro.props as Props;
+const languageOverride = siteConfig.posts.codeBlockLanguageOverride[lang];
+---
+
+<WindowCode
+  client:visible
+  {...restProps}
+  attributionAuthor={siteConfig.author}
+  attributionSource={Astro.url.toString()}
+  language={languageOverride?.label ?? lang}
+  languageExt={languageOverride?.ext ?? lang.toLowerCase()}
+  languageEntrypoint={languageOverride?.entrypoint ?? 'main'}
+>
+  <slot />
+</WindowCode>

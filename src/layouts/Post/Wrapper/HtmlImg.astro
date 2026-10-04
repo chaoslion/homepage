@@ -1,0 +1,48 @@
+---
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+
+import ImageHint from '#/components/ui/ImageHint.svelte';
+import type { GalleryImageProps } from '#/types/components';
+import { siteConfig } from '#content';
+
+import Image from './Image.astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  id?: string;
+}
+
+const { src, alt, id } = Astro.props as Props;
+
+const galleryImage: GalleryImageProps = {
+  original: await getImage({
+    src,
+    format: 'webp',
+  }),
+  preview: await getImage({
+    src,
+    width: Math.min(siteConfig.posts.thumbnailWidth, src.width),
+    format: 'webp',
+    quality: 80,
+  }),
+};
+const cropped = false;
+---
+
+<a
+  {id}
+  href={galleryImage.original.src}
+  class="group not-prose relative"
+  data-pswp
+  data-cropped={cropped ? 'true' : undefined}
+  data-pswp-srcset={galleryImage.original.srcSet.attribute.length > 0
+    ? galleryImage.original.srcSet.attribute
+    : undefined}
+  data-pswp-width={galleryImage.original.attributes.width}
+  data-pswp-height={galleryImage.original.attributes.height}
+>
+  <Image src={galleryImage.preview} label={alt} />
+  <ImageHint label="Click to enlarge" />
+</a>

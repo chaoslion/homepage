@@ -1,0 +1,20 @@
+---
+import { FigureWithCaption } from '#/components/ui';
+import { getResourcesCollectionItem } from '#/data/blog';
+import type { BlogFigureResourceProps } from '#plugins-satteri';
+
+import AnchorResource from '../AnchorResource.svelte';
+
+const { label, id, resourceId } = Astro.props as BlogFigureResourceProps;
+const resource = await getResourcesCollectionItem(resourceId);
+---
+
+<FigureWithCaption
+  figureId={id}
+  class="flex flex-col items-center gap-2"
+  caption={label}
+  captionClass="flex flex-col items-center"
+>
+  <slot />
+  <AnchorResource slot="captionResource" {resource} />
+</FigureWithCaption>

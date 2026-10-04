@@ -1,0 +1,37 @@
+{
+  "plugins": [
+    "prettier-plugin-svelte",
+    "prettier-plugin-astro",
+    "@ianvs/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
+  ],
+  "importOrder": [
+    "^(svelte|astro)(.*)$",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "^#(.*)$",
+    "",
+    "^[./]"
+  ],
+  "semi": true,
+  "tailwindFunctions": ["clsx"],
+  "trailingComma": "all",
+  "singleQuote": true,
+  "importOrderTypeScriptVersion": "5.0.0",
+  "overrides": [
+    {
+      "files": "*.svelte",
+      "options": { "parser": "svelte" }
+    },
+    {
+      "files": "*.astro",
+      "options": { "parser": "astro" }
+    },
+    {
+      "files": ["*.md", "*.mdx"],
+      "options": {
+        "proseWrap": "preserve"
+      }
+    }
+  ]
+}

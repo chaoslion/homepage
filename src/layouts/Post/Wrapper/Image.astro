@@ -1,0 +1,29 @@
+---
+import type { GetImageResult } from 'astro';
+
+import { Image } from '#/components/ui';
+
+interface Props {
+  src: GetImageResult;
+  label: string;
+  class?: string;
+  restrictHeight?: boolean;
+}
+const {
+  src,
+  label,
+  class: className,
+  restrictHeight = true,
+}: Props = Astro.props;
+---
+
+<Image
+  client:visible
+  src={src}
+  label={label}
+  class:list={[
+    'rounded-box bg-base-200 max-w-full object-cover',
+    { 'max-h-96': restrictHeight },
+    className,
+  ]}
+/>

@@ -1,0 +1,79 @@
+---
+import TaxonomyCategoriesTable from '#/components/blocks/TaxonomyCategoriesTable.svelte';
+import TaxonomySeriesTable from '#/components/blocks/TaxonomySeriesTable.svelte';
+import TaxonomyTagsCloud from '#/components/blocks/TaxonomyTagsCloud.svelte';
+import { HeadingFancy } from '#/components/ui';
+import {
+  filterPostsCollectionByCategory,
+  filterPostsCollectionBySeries,
+  filterPostsCollectionByTag,
+  getBlogPostsCollectionSorted,
+  getCategoriesCollection,
+  getSeriesCollection,
+  getTagsCollection,
+} from '#/data/blog';
+import LayoutDefault from '#/layouts/Default.astro';
+import type {
+  CategoriesCollectionItem,
+  CategoriesCollectionPosts,
+  PostsCollectionItem,
+  SeriesCollectionItem,
+  SeriesCollectionPosts,
+  TagsCollectionItem,
+  TagsCollectionPosts,
+} from '#/types/collections';
+
+const postsCollection: PostsCollectionItem[] =
+  await getBlogPostsCollectionSorted();
+const categoriesCollection: CategoriesCollectionItem[] =
+  await getCategoriesCollection();
+const tagsCollection: TagsCollectionItem[] = await getTagsCollection();
+const seriesCollection: SeriesCollectionItem[] = await getSeriesCollection();
+
+const postsCollectionByCategory: CategoriesCollectionPosts[] =
+  categoriesCollection.map((item) => {
+    const posts = filterPostsCollectionByCategory(postsCollection, item);
+    return {
+      category: item,
+      posts: posts.length,
+      readingTimeSum: posts.reduce(
+        (acc, item) => acc + item.readingTime.minutes,
+        0,
+      ),
+    };
+  });
+
+const postsCollectionByTag: TagsCollectionPosts[] = tagsCollection.map(
+  (item) => {
+    const posts = filterPostsCollectionByTag(postsCollection, item);
+    return {
+      tag: item,
+      posts: posts.length,
+    };
+  },
+);
+
+const postsCollectionBySeries: SeriesCollectionPosts[] = seriesCollection.map(
+  (item) => {
+    const posts = filterPostsCollectionBySeries(postsCollection, item);
+    return {
+      series: item,
+      posts: posts.length,
+    };
+  },
+);
+---
+
+<LayoutDefault title="Explore">
+  <HeadingFancy title="Browse By Category" />
+  <TaxonomyCategoriesTable
+    posts={postsCollectionByCategory}
+    totalPosts={postsCollection.length}
+  />
+
+  <HeadingFancy title="Browse By Tag" />
+  <TaxonomyTagsCloud tags={postsCollectionByTag} />
+
+  <HeadingFancy title="Browse By Series" />
+  <TaxonomySeriesTable posts={postsCollectionBySeries} />
+</LayoutDefault>

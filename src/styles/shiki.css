@@ -1,0 +1,43 @@
+html[data-theme="dracula"] .astro-code,
+html[data-theme="dracula"] .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+.astro-code {
+  @apply p-2;
+}
+
+.astro-code.has-focused .line {
+  opacity: var(--focus-dim-opacity);
+  transition: opacity 0.2s ease;
+  filter: blur(0.06rem);
+}
+
+.astro-code.has-focused:hover .line {
+  opacity: 1;
+  filter: blur(0);
+}
+
+.astro-code.has-focused .line.focused {
+  opacity: 1;
+  filter: blur(0);
+}
+
+.astro-code .line.highlighted,
+.astro-code .line.highlighted span {
+  background-color: rgba(255, 217, 0, 0.15) !important;
+}
+
+html[data-theme="dracula"] .astro-code .line.highlighted,
+html[data-theme="dracula"] .astro-code .line.highlighted span {
+  background-color: rgba(255, 217, 0, 0.2) !important;
+}
+
+.astro-code.has-focused .line.highlighted {
+  opacity: 1;
+  filter: blur(0);
+}

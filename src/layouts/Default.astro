@@ -1,0 +1,20 @@
+---
+import type { BaseProps } from '#/types/layouts';
+
+import Base from './Base.astro';
+import Container from './Base/Container.svelte';
+import ContainerConstrain from './Base/ContainerConstrain.svelte';
+
+interface Props extends BaseProps {}
+
+const { ...baseRestProps } = Astro.props as Props;
+---
+
+<Base {...baseRestProps}>
+  <slot name="hero" />
+  <Container supportsSearchIndex={true}>
+    <ContainerConstrain>
+      <slot />
+    </ContainerConstrain>
+  </Container>
+</Base>

@@ -1,0 +1,31 @@
+@utility custom-font-window-border {
+  font-family: var(--font-space-grotesk);
+}
+
+@utility terminal-line-hard {
+  text-shadow:
+    0 0 4px currentColor,
+    0 0 4px currentColor;
+}
+
+@utility terminal-line {
+  text-shadow: 0 0 8px;
+}
+
+@keyframes crt-flicker {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 0.92;
+  }
+  75% {
+    opacity: 0.97;
+  }
+  100% {
+    opacity: 1;
+  }
+}

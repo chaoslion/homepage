@@ -1,0 +1,10 @@
+services:
+  main:
+    build:
+      context: .devcontainer
+      dockerfile: Dockerfile
+    command: sleep infinity
+    user: node
+    network_mode: host
+    volumes:
+      - .:/workspace

@@ -1,0 +1,8 @@
+---
+import { AnchorTextExternal } from '#/components/ui';
+import type { BlogLinkProps } from '#plugins-satteri';
+
+const { href, label } = Astro.props as BlogLinkProps;
+---
+
+<AnchorTextExternal {href} text={label ?? href} anchorClass="not-prose" />

@@ -1,0 +1,16 @@
+---
+import { FigureWithCaption } from '#/components/ui';
+import type { BlogFigureProps } from '#plugins-satteri';
+
+interface Props extends BlogFigureProps {}
+
+const { label, id } = Astro.props as Props;
+---
+
+<FigureWithCaption
+  figureId={id}
+  class="flex flex-col items-center gap-2"
+  caption={label}
+>
+  <slot />
+</FigureWithCaption>

@@ -1,0 +1,36 @@
+---
+import { AnchorText } from '#/components/ui';
+import { getBlogPostsCollection } from '#/data/blog';
+import type {
+  BlogLinkInternalPostHash,
+  BlogLinkPropsInternalPost,
+} from '#plugins-satteri';
+
+import AnchorPostHash from '../AnchorPostHash.svelte';
+
+const { slug, hashTarget, hashType, hashId, label } =
+  Astro.props as BlogLinkPropsInternalPost;
+
+const postsCollection = await getBlogPostsCollection();
+const post = postsCollection.get(slug);
+if (!post) {
+  throw new Error(`No post found with slug ${slug}`);
+}
+
+const hash: BlogLinkInternalPostHash | undefined = hashTarget
+  ? { target: hashTarget, type: hashType!, id: hashId! }
+  : undefined;
+---
+
+{
+  hash ? (
+    <AnchorPostHash href={post.href} {label} {...hash} />
+  ) : (
+    <AnchorText
+      href={post.href}
+      text={label ?? post.title}
+      icon="mdi--book-open-page-variant-outline"
+      anchorClass="not-prose"
+    />
+  )
+}

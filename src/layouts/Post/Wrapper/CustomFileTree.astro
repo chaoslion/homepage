@@ -1,0 +1,10 @@
+---
+import FileTree from '#/components/blocks/FileTree.svelte';
+import type { FileTreeContent } from '#/types/components';
+
+interface Props extends FileTreeContent {}
+
+const { ...fileTreeRestProps } = Astro.props as Props;
+---
+
+<FileTree {...fileTreeRestProps} class="not-prose" />

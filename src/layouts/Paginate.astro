@@ -1,0 +1,36 @@
+---
+import type { Page } from 'astro';
+
+import type { BaseProps } from '#/types/layouts';
+
+import Base from './Base.astro';
+import Container from './Base/Container.svelte';
+import ContainerConstrain from './Base/ContainerConstrain.svelte';
+import Paginate from './Base/Paginate.svelte';
+
+interface Props extends BaseProps {
+  href: string;
+  paginatePage: Page;
+}
+
+let { href, paginatePage, ...baseRestProps } = Astro.props as Props;
+---
+
+<Base {...baseRestProps}>
+  <Container>
+    <ContainerConstrain>
+      {
+        paginatePage.lastPage > 1 && (
+          <Paginate client:load {href} page={paginatePage} />
+        )
+      }
+      <slot />
+
+      {
+        paginatePage.lastPage > 1 && (
+          <Paginate client:visible {href} page={paginatePage} />
+        )
+      }
+    </ContainerConstrain>
+  </Container>
+</Base>

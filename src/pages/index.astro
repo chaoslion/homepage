@@ -1,0 +1,56 @@
+---
+import { getImage } from 'astro:assets';
+
+import profilePicture from '#/assets/images/profile.jpg';
+import PostsPreviewGrid from '#/components/blocks/PostsPreviewGrid.svelte';
+import Hero from '#/components/pages/home/Hero.svelte';
+import TechStack from '#/components/pages/home/TechStack.svelte';
+import { HeadingFancy, Icon } from '#/components/ui';
+import { getBlogPostsCollectionSorted } from '#/data/blog';
+import LayoutDefault from '#/layouts/Default.astro';
+import { iconFlex } from '#/lib/css';
+import type { PostsCollectionItem } from '#/types/collections';
+import { siteConfig } from '#content';
+
+const postsCollection: PostsCollectionItem[] =
+  await getBlogPostsCollectionSorted();
+const postCollectionSticky = postsCollection.filter((post) => post.sticky);
+const postCollectionLimited = postsCollection
+  .filter((post) => !post.sticky)
+  .slice(0, siteConfig.posts.indexMax);
+
+const profilePictureOpt = await getImage({
+  src: profilePicture,
+  alt: 'Profile',
+  format: 'webp',
+  widths: [400, 800, 1200],
+  loading: 'eager',
+});
+---
+
+<LayoutDefault supportsIndex={true}>
+  <Hero client:load slot="hero" profilePicture={profilePictureOpt} />
+
+  <HeadingFancy title="Current Tech Stack" />
+  <TechStack stack={siteConfig.techStack} />
+
+  <HeadingFancy title="Featured Posts" />
+  <PostsPreviewGrid client:visible posts={postCollectionSticky} />
+
+  <HeadingFancy title="Latest Posts" />
+  <section>
+    <PostsPreviewGrid client:visible posts={postCollectionLimited} />
+    <div class="mt-8 flex items-center justify-center gap-2">
+      <a href="/posts" class="btn btn-primary">Browse All</a>
+      <a href="/posts/random" class:list={['btn btn-primary group', iconFlex()]}
+        ><Icon
+          name="mdi--dice"
+          class:list={[
+            'paused group-hover:running animate-[spin_5s_linear_infinite]',
+            siteConfig.navIconClass,
+          ]}
+        /> Random</a
+      >
+    </div>
+  </section>
+</LayoutDefault>
