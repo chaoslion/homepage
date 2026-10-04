@@ -11,7 +11,7 @@
   const padStart = $derived(`${resources.length}`.length);
 
   function filterResources(item: ResourceCollectionItem): boolean {
-    const url = new URL(item.href);
+    const url = new URL(item.href, 'http://localhost');
     return url.pathname.length > 1 || item.forceListing;
   }
 </script>
