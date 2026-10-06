@@ -1,32 +1,5 @@
 import type { Attachment } from 'svelte/attachments';
 import Typed, { type TypedOptions } from 'typed.js';
-import TypeIt from 'typeit';
-
-export function typeItTerminalLine(
-  strings: string[],
-  speed: number = 35,
-): Attachment<HTMLElement> {
-  return (element: HTMLElement) => {
-    const instance = new TypeIt(element, {
-      speed,
-      deleteSpeed: 40,
-      waitUntilVisible: false,
-      loop: true,
-      lifeLike: true,
-      html: false,
-      cursor: true,
-      cursorChar: '▋',
-    });
-    strings.forEach((str, i) => {
-      instance.type(str).pause(1250).delete();
-      if (i < strings.length - 1) instance.pause(300);
-    });
-    instance.go();
-    return () => {
-      instance.destroy();
-    };
-  };
-}
 
 export function typedTerminalLine(
   strings: string[],

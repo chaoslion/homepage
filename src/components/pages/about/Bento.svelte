@@ -3,7 +3,7 @@
   import { onMount, type Snippet } from 'svelte';
 
   import { Grid, Image } from '#/components/ui';
-  import { shufflePostsCollection } from '#/data/blog-tools';
+  import { shuffleCollection } from '#/data/blog-tools';
   import type { PostsCollectionItem } from '#/types/collections';
   import { siteConfig } from '#content';
 
@@ -17,7 +17,7 @@
   let randomCollection: PostsCollectionItem[] = $state([]);
 
   onMount(() => {
-    shufflePostsCollection(collection);
+    shuffleCollection(collection);
     randomCollection = collection.slice(0, maxPosts);
   });
 </script>

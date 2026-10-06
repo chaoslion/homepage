@@ -26,20 +26,12 @@ const workspacePaths: Record<string, string> = {
 const contentBlogPostsPath = `${workspacePaths.content}/blog/posts`;
 const contentBlogPostsImagesDirectory = 'assets';
 
-let workspacePorcelain: boolean = false;
-try {
-  const result = execSync(`git status --porcelain`);
-  workspacePorcelain = result.toString().trim().length === 0;
-} catch (e) {}
+const isDev = process.env.NODE_ENV === 'development';
 
 export default defineConfig({
-  site: workspacePorcelain
-    ? 'https://alex.jaehnel.info'
-    : 'http://localhost:4321',
+  site: !isDev ? 'https://alex.jaehnel.info' : 'http://localhost:4321',
   build: {
-    assetsPrefix: workspacePorcelain
-      ? 'https://assets.alex.jaehnel.info'
-      : undefined,
+    assetsPrefix: !isDev ? 'https://assets.alex.jaehnel.info' : undefined,
   },
   adapter: node({
     mode: 'standalone',
@@ -121,15 +113,12 @@ export default defineConfig({
       ),
     },
     esbuild: {
-      drop: workspacePorcelain ? ['console', 'debugger'] : [],
+      drop: !isDev ? ['console', 'debugger'] : [],
     },
     server: {
       allowedHosts: ['.jaehnel.info'],
     },
-    plugins: [
-      tailwindcss(),
-      pluginBuildInfo(workspacePaths, !workspacePorcelain),
-    ],
+    plugins: [tailwindcss(), pluginBuildInfo(workspacePaths, isDev)],
     resolve: {
       tsconfigPaths: true,
     },

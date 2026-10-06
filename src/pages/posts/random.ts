@@ -1,19 +1,17 @@
 import type { APIRoute } from 'astro';
+import { getCollection } from 'astro:content';
 
-import { getBlogPostsCollectionSorted } from '#/data/blog';
-import { shufflePostsCollection } from '#/data/blog-tools';
+import { shuffleCollection } from '#/data/blog-tools';
 
 export const prerender = false;
 
-const postsCollection = await getBlogPostsCollectionSorted();
+const postIds = (await getCollection('blog-posts')).map((post) => post.id);
 
 export const GET = (async (context) => {
-  shufflePostsCollection(postsCollection);
-  if (postsCollection.length === 0) {
+  const [firstId] = shuffleCollection(postIds);
+  if (firstId === undefined) {
     return context.redirect('/posts', 307);
   }
 
-  const [firstPost, ..._restPosts] = postsCollection;
-
-  return context.redirect(firstPost.href, 307);
+  return context.redirect(`/posts/${firstId}`, 307);
 }) satisfies APIRoute;
