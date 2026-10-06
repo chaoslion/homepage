@@ -14,6 +14,10 @@ dependencies = [
     "scipy>=1.18.1",
 ]
 
+[project.scripts]
+site-assets = "content.cli.site_assets:main"
+site-deploy = "content.cli.site_deploy:main"
+
 [tool.pyright]
 typeCheckingMode = "standard"
 
