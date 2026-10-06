@@ -26,6 +26,7 @@ interface Stat {
 
 export interface TechCategoryItem {
   icon: string;
+  label?: string;
   techs: string[];
 }
 
