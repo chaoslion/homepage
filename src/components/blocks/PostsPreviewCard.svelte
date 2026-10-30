@@ -38,7 +38,7 @@
       <a href={post.category.href}>
         <Badge
           label="Category"
-          labelIcon="mdi--shape-outline"
+          labelIcon={post.category.icon}
           labelIconClass={badgeIconClass}
           text={post.category.title}
           textColor="badge-primary"
