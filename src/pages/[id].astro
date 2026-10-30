@@ -23,6 +23,13 @@ const { Content } = await render(page);
 const components = {
   a: ProseAnchor,
 };
+
+const updateLabel = page.data.date.toLocaleDateString('en-US', {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
 ---
 
 <LayoutDefault
@@ -36,7 +43,7 @@ const components = {
     subtitle={page.data.subtitle}
   />
   <div role="alert" class="alert alert-info alert-soft w-fit">
-    <span>Last updated {page.data.date.toDateString()}</span>
+    <span>Updated on {updateLabel}</span>
   </div>
   <div class="prose">
     <Content {components} />
