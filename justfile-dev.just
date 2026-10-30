@@ -10,3 +10,6 @@ go:
 
 check:
     pnpm exec astro check
+
+bump:
+    pnpm update -i --latest
