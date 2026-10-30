@@ -16,7 +16,7 @@
   <ul>
     <li>
       <a href="/" aria-label="Home">
-        <Icon name="mdi--home" class="size-5 opacity-25" />
+        <Icon name="mdi--home-outline" class="size-5 opacity-25" />
       </a>
     </li>
     {#each urlParts as item, index}

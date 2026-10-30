@@ -37,7 +37,10 @@
     >
       {#if caption}
         <span class={iconFlex()}>
-          <Icon name={captionIcon ?? 'mdi--information'} class="size-4" />
+          <Icon
+            name={captionIcon ?? 'mdi--information-outline'}
+            class="size-4"
+          />
           {caption}
         </span>
       {/if}

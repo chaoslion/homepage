@@ -68,7 +68,7 @@
     {#if tree.isFolder && tree.children.length > 0}
       <details open={isFolderOpen}>
         <summary>
-          <Icon name="mdi--folder" class="size-4" />
+          <Icon name="mdi--folder-outline" class="size-4" />
           {tree.name}
         </summary>
         <ul>
@@ -78,7 +78,7 @@
     {:else}
       <div>
         <Icon
-          name={tree.isFolder ? 'mdi--folder' : 'mdi--file'}
+          name={tree.isFolder ? 'mdi--folder-outline' : 'mdi--file-outline'}
           class="size-4"
         />
         {tree.name}

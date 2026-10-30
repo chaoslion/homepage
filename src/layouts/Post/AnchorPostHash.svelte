@@ -16,7 +16,7 @@
     code: 'mdi--code-tags',
     section: 'mdi--pound',
     eqn: 'mdi--function-variant',
-    fig: 'mdi--image',
+    fig: 'mdi--image-filter-hdr-outline',
   };
 
   const hrefFinal = $derived(href ? `${href}#${target}` : `#${target}`);

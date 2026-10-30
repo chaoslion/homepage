@@ -75,7 +75,7 @@
     {@render navMenuButtonSwap(
       'contact.sh',
       'contact.sh',
-      'mdi--account-details',
+      'mdi--account-details-outline',
       'mdi--check',
       () => {
         contactModalElement.showModal();
@@ -113,7 +113,7 @@
   {/each}
   <li>
     <h2 class="menu-title">
-      {@render navMenuLabel('mdi--card-account-details', 'contact/')}
+      {@render navMenuLabel('mdi--card-account-details-outline', 'contact/')}
     </h2>
     <SocialList>
       {#snippet itemFn(item: SocialLink)}
