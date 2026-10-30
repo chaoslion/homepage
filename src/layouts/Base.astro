@@ -53,7 +53,7 @@ let urlParts: UrlPart[] = Astro.url.pathname
 
 <html
   lang={langGermanLegacy ? 'de' : 'en'}
-  {...!supportsSearchIndex ? { 'data-rangefind-ignore': true } : {}}
+  {...(!supportsSearchIndex ? { 'data-rangefind-ignore': true } : {})}
   class:list={[{ 'debug-screens': import.meta.env.DEV }]}
 >
   <head>
@@ -135,15 +135,13 @@ let urlParts: UrlPart[] = Astro.url.pathname
       </noscript>
     </header>
     <main class="my-6 flex grow flex-col gap-6 lg:my-12">
-      {
-        urlParts.length > 1 && (
-          <Container>
-            <ContainerConstrain>
-              <BaseBreadcrumbs {urlParts} />
-            </ContainerConstrain>
-          </Container>
-        )
-      }
+      {urlParts.length > 1 && (
+        <Container>
+          <ContainerConstrain>
+            <BaseBreadcrumbs {urlParts} />
+          </ContainerConstrain>
+        </Container>
+      )}
       <slot />
     </main>
     <footer>
@@ -154,9 +152,7 @@ let urlParts: UrlPart[] = Astro.url.pathname
           url={Astro.url}
         />
       </Container>
-      <Container
-        class="bg-neutral text-neutral-content border-t-accent border-t-4 py-4"
-      >
+      <Container class="bg-neutral text-neutral-content border-t-accent border-t-4 py-4">
         <BaseFooter client:visible />
       </Container>
     </footer>
@@ -168,16 +164,16 @@ let urlParts: UrlPart[] = Astro.url.pathname
 
       await siteInit();
     </script>
-    {
-      !import.meta.env.DEV && (
-        <script
-          is:inline
-          type="text/partytown"
-          src={siteConfig.trackingUrl}
-          data-astro-rerun
-          data-website-id={siteConfig.trackingId}
-        />
-      )
-    }
-  </body>{}
+    {!import.meta.env.DEV && (
+      <script
+        is:inline
+        type="text/partytown"
+        src={siteConfig.trackingUrl}
+        data-astro-rerun
+        data-website-id={siteConfig.trackingId}
+        data-do-not-track="true"
+      />
+    )}
+  </body>
+  {}
 </html>
