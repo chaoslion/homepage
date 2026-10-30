@@ -1,4 +1,3 @@
-import { execSync } from 'node:child_process';
 import path from 'node:path';
 import aiRobotsTxt from 'astro-ai-robots-txt';
 import compressor from 'astro-compressor';
