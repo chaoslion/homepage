@@ -15,7 +15,7 @@
 
 <Window class={className}>
   {#snippet title()}
-    <div class="custon-font-title truncate text-center text-lg">
+    <div class="custom-font-title truncate text-center text-lg">
       {terminalTitle}
     </div>
   {/snippet}
