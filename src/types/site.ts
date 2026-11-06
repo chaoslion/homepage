@@ -51,14 +51,8 @@ interface Build {
   repos: BuildInfoMap;
 }
 
-interface CodeBlockLanguage {
-  label?: string;
-  ext?: string;
-  entrypoint?: string;
-}
-
 interface PostsConfig {
-  codeBlockLanguageOverride: Record<string, CodeBlockLanguage>;
+  codeBlockLanguageOverride: Record<string, string>;
   indexMax: number;
   legacyCutoff: Date;
   maxRelated: number;

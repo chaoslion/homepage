@@ -9,19 +9,20 @@
 >
   <div class="relative flex items-center justify-end max-md:hidden">
     <div class="bg-accent absolute inset-x-0 h-0.5 brightness-50"></div>
-    <Anchor
-      href="/changelog"
-      class="transition-brightness flex gap-2 px-2 brightness-50 hover:brightness-100"
-    >
-      {#each Object.entries(siteConfig.build.repos) as [repo, item]}
-        <Badge label={repo} text={item.release} textColor="badge-primary" />
-      {/each}
+    <Anchor href="/changelog" class="group bg-neutral relative px-2">
+      <div
+        class="flex gap-2 opacity-50 transition-opacity duration-200 ease-out group-hover:opacity-100"
+      >
+        {#each Object.entries(siteConfig.build.repos) as [repo, item]}
+          <Badge label={repo} text={item.release} textColor="badge-primary" />
+        {/each}
+      </div>
     </Anchor>
   </div>
 
   <a href="/">
     <div
-      class="terminal-line hover:terminal-line-hard flex flex-col gap-2 p-1 select-none"
+      class="custom-terminal-line hover:custom-terminal-line-hard flex flex-col gap-2 p-1 select-none"
     >
       <Heading tag="h2">
         ~/<span class="text-accent"

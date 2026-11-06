@@ -28,7 +28,7 @@
         <Image
           src={post.cover}
           label={post.title}
-          class="aspect-2/1 w-full object-cover transition-transform duration-250 ease-in-out group-hover:scale-110"
+          class="aspect-2/1 w-full object-cover ease-in-out group-hover:scale-110 motion-safe:transition-transform motion-safe:duration-250"
         />
       </a>
     </figure>

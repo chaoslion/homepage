@@ -6,7 +6,7 @@
 
   interface Props {
     class?: ClassValue;
-    title: string;
+    title: string | Snippet;
     children: Snippet;
   }
 
@@ -15,9 +15,13 @@
 
 <Window class={className}>
   {#snippet title()}
-    <div class="custom-font-title truncate text-center text-lg">
-      {terminalTitle}
-    </div>
+    {#if typeof terminalTitle === 'string'}
+      <div class="custom-font-title truncate text-center text-lg">
+        {terminalTitle}
+      </div>
+    {:else}
+      {@render terminalTitle()}
+    {/if}
   {/snippet}
   <div class="bg-neutral text-neutral-content p-2 font-mono">
     {@render children()}

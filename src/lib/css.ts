@@ -18,7 +18,7 @@ export function anchorTerminal() {
 }
 
 export function anchorInline() {
-  return `link link-hover link-primary`;
+  return `link link-primary`;
 }
 
 export function anchorInlineIcon() {

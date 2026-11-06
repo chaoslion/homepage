@@ -46,7 +46,7 @@ const profilePictureOpt = await getImage({
         ><Icon
           name="mdi--dice"
           class:list={[
-            'paused group-hover:running animate-[spin_5s_linear_infinite]',
+            'motion-safe:paused motion-safe:group-hover:running motion-safe:animate-[spin_5s_linear_infinite]',
             siteConfig.navIconClass,
           ]}
         /> Random</a

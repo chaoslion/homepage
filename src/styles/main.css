@@ -1,3 +1,10 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'photoswipe/dist/photoswipe.css';
+@import 'asciinema-player/dist/bundle/asciinema-player.css';
+@import './custom.css';
+@import './shiki.css';
+
 @plugin '@tailwindcss/typography';
 @plugin 'daisyui' {
   themes:
@@ -11,19 +18,10 @@
 
 @custom-variant dark (&:where([data-theme=dracula], [data-theme=dracula] *));
 
-@import 'photoswipe/dist/photoswipe.css';
-@import 'asciinema-player/dist/bundle/asciinema-player.css';
-@import 'tailwindcss';
-@import 'tw-animate-css';
-@import './custom.css';
-@import './shiki.css';
-
 /* add content for tailwind scanning (submodules are initially ignored) */
 @source '../../content';
-/*always include tailwind classes*/
 
-@theme {
-  --animate-crt-flicker: crt-flicker 1s infinite;
+@theme inline {
   --font-mono: var(--font-fira-code);
   --font-sans: var(--font-geist);
   --custom-font-title: var(--font-space-grotesk);

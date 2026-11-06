@@ -11,14 +11,14 @@ const { lang, ...restProps } = Astro.props as Props;
 const languageOverride = siteConfig.posts.codeBlockLanguageOverride[lang];
 ---
 
-<WindowCode
-  client:visible
-  {...restProps}
-  attributionAuthor={siteConfig.author}
-  attributionSource={Astro.url.toString()}
-  language={languageOverride?.label ?? lang}
-  languageExt={languageOverride?.ext ?? lang.toLowerCase()}
-  languageEntrypoint={languageOverride?.entrypoint ?? 'main'}
->
-  <slot />
-</WindowCode>
+<figure aria-label="Code Block">
+  <WindowCode
+    client:visible
+    {...restProps}
+    attributionAuthor={siteConfig.author}
+    attributionSource={Astro.url.toString()}
+    language={languageOverride ?? lang}
+  >
+    <slot />
+  </WindowCode>
+</figure>

@@ -2,30 +2,23 @@
   font-family: var(--font-space-grotesk);
 }
 
-@utility terminal-line-hard {
+@utility custom-terminal-line-hard {
   text-shadow:
     0 0 4px currentColor,
     0 0 4px currentColor;
 }
 
-@utility terminal-line {
+@utility custom-terminal-line {
   text-shadow: 0 0 8px;
 }
 
-@keyframes crt-flicker {
-  0% {
-    opacity: 1;
-  }
-  25% {
-    opacity: 0.95;
-  }
-  50% {
-    opacity: 0.92;
-  }
-  75% {
-    opacity: 0.97;
-  }
-  100% {
-    opacity: 1;
-  }
-}
+/*.custom-chat-bubble-prose-content {
+  --tw-prose-body: currentColor;
+  --tw-prose-headings: currentColor;
+  --tw-prose-bold: currentColor;
+  --tw-prose-links: currentColor;
+  --tw-prose-bullets: currentColor;
+  --tw-prose-counters: currentColor;
+  --tw-prose-quotes: currentColor;
+  --tw-prose-code: currentColor;
+}*/

@@ -18,9 +18,7 @@ const resourceItemSchema = z
 export const collections = {
   'blog-posts': defineCollection({
     loader: glob({
-      pattern: [
-        `[0-9][0-9][0-9][0-9]/[0-9][0-9]-[0-9][0-9]-*/${postsIndexFilename}`,
-      ],
+      pattern: `[0-9][0-9][0-9][0-9]/[0-9][0-9]-[0-9][0-9]-*/${postsIndexFilename}`,
       deferRender: true,
       retainBody: true,
       base: `${import.meta.env.CUSTOM_CONTENT_PATH}/blog/posts`,
@@ -103,13 +101,12 @@ export const collections = {
   about: defineCollection({
     loader: glob({
       base: `${import.meta.env.CUSTOM_CONTENT_PATH}/about`,
-      pattern: ['*.md'],
+      pattern: '+([0-9])-*.{md,mdx}',
       retainBody: false,
     }),
     schema: () =>
       z
         .object({
-          order: z.number(),
           prompt: nonEmptyString,
           context: nonEmptyString,
         })

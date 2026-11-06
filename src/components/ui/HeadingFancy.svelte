@@ -15,6 +15,7 @@
 
 <div class={className}>
   <Heading {tag} {id}>
+    <span class="bg-accent inline-block h-6 w-2 rounded-sm"></span>
     {title}
     {#if subtitle && preposition}
       {preposition}
@@ -25,5 +26,5 @@
       {subtitle}
     </p>
   {/if}
-  <div class="from-accent to-base-100 mt-1 h-1 bg-linear-to-r"></div>
+  <div class="from-base-300 to-base-100 mt-1 h-0.5 bg-linear-to-r"></div>
 </div>

@@ -9,8 +9,6 @@
 
   interface Props extends BlogCodeBlockProps {
     language: string;
-    languageExt: string;
-    languageEntrypoint: string;
     attributionAuthor: string;
     attributionSource: string;
     children: Snippet;
@@ -20,8 +18,6 @@
     id,
     label,
     language,
-    languageExt,
-    languageEntrypoint,
     attributionAuthor,
     attributionSource,
     children,
@@ -45,10 +41,10 @@
   }
 
   async function handleCopy(event: ClipboardEvent) {
-    // if (!event.clipboardData) return;
-    // const selection = window.getSelection()?.toString() ?? '';
-    // event.preventDefault();
-    // event.clipboardData.setData('text/plain', prepareText(selection));
+    if (!event.clipboardData) return;
+    const selection = window.getSelection()?.toString() ?? '';
+    event.preventDefault();
+    event.clipboardData.setData('text/plain', prepareText(selection));
   }
 
   async function copyToClipboard() {
@@ -62,27 +58,27 @@
   const finalLabel = $derived(label ?? 'Code');
 </script>
 
-<figure>
-  <Window {id} class="not-prose">
-    {#snippet title()}
-      <div class="custom-font-title flex items-center gap-2 p-2 text-lg">
-        <span class="mr-auto min-w-0 overflow-x-auto whitespace-nowrap">{finalLabel}</span>
-        <button
-          class={['btn btn-secondary btn-xs', iconFlex()]}
-          disabled={copied}
-          onclick={copyToClipboard}
-        >
-          <Icon
-            name={copied ? 'mdi--check' : 'mdi--content-copy'}
-            class="size-4"
-          />
-          {copied ? 'Copied' : 'Copy'}
-        </button>
-        <div class="badge badge-ghost">{language}</div>
-      </div>
-    {/snippet}
-    <div bind:this={codeBody} oncopy={handleCopy}>
-      {@render children()}
+<Window {id} class="not-prose">
+  {#snippet title()}
+    <div class="custom-font-title flex items-center gap-2 p-2 text-lg">
+      <span class="mr-auto min-w-0 overflow-x-auto whitespace-nowrap"
+        >{finalLabel}</span
+      >
+      <button
+        class={['btn btn-secondary btn-xs', iconFlex()]}
+        disabled={copied}
+        onclick={copyToClipboard}
+      >
+        <Icon
+          name={copied ? 'mdi--check' : 'mdi--content-copy'}
+          class="size-4"
+        />
+        {copied ? 'Copied' : 'Copy'}
+      </button>
+      <div class="badge badge-ghost">{language}</div>
     </div>
-  </Window>
-</figure>
+  {/snippet}
+  <div bind:this={codeBody} oncopy={handleCopy}>
+    {@render children()}
+  </div>
+</Window>

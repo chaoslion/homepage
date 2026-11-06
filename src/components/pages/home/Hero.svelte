@@ -28,12 +28,19 @@
       />
       <Heading tag="h2">Fixing Things That Don't.</Heading>
       <p class="py-6 text-xl">
-        Welcome! I`m Alex. I spend my days writing production-grade code,
+        Welcome! I'm Alex. I spend my days writing production-grade code,
         architecting systems, and navigating the messy reality of software
-        engineering. This blog is where I share practical insights, hard-learned
-        lessons, and honest takes on computer science and software development.
+        engineering. Check out <a href="/now" class="link link-primary"
+          >what I'm doing now</a
+        >
+        or the
+        <a href="/uses" class="link link-primary">tools and tech I use</a>. This
+        blog is where I share practical insights, hard-learned lessons, and
+        honest takes on computer science and software development.
       </p>
-      <a href="/about" class="btn btn-primary">Who's Writing This?</a>
+      <div class="flex flex-wrap items-center gap-3 max-lg:justify-center">
+        <a href="/about" class="btn btn-primary btn-lg">More About Me</a>
+      </div>
     </div>
   </div>
 </div>

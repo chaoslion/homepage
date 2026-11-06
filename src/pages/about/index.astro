@@ -6,7 +6,8 @@ import avatarAuthor from '#/assets/images/profile.jpg';
 import WindowTerminal from '#/components/blocks/WindowTerminal.svelte';
 import WindowTerminalCommand from '#/components/blocks/WindowTerminalCommand.svelte';
 import Bento from '#/components/pages/about/Bento.svelte';
-import Chat from '#/components/pages/about/Chat.svelte';
+import ChatAuthor from '#/components/pages/about/ChatAuthor.svelte';
+import ChatYou from '#/components/pages/about/ChatYou.svelte';
 import CommunityCard from '#/components/pages/about/CommunityCard.svelte';
 import Stats from '#/components/pages/about/Stats.svelte';
 import {
@@ -18,6 +19,7 @@ import {
 import Grid from '#/components/ui/Grid.svelte';
 import { getBlogPostsCollectionSorted, getTagsCollection } from '#/data/blog';
 import LayoutDefault from '#/layouts/Default.astro';
+import { anchorInline } from '#/lib/css';
 import { siteConfig } from '#content';
 
 import galleryMain from './_assets/myself.jpg';
@@ -47,85 +49,73 @@ const aboutCollectionRendered = (
       return { entry, Content };
     }),
   )
-).toSorted((a, b) => a.entry.data.order - b.entry.data.order);
+).toSorted((a, b) => a.entry.id.localeCompare(b.entry.id));
 ---
 
 <LayoutDefault title="About" supportsSearchIndex={true} supportsIndex={true}>
-  <div class="flex justify-center">
-    <div class="aura aura-gold aura-lg">
-      <HeadingPrimitive tag="h1" class="bg-base-100 rounded-box p-2">
-        alexander. <span
-          class="from-primary to-secondary bg-linear-to-r bg-clip-text text-transparent"
-          >computer engineer.</span
-        >
-      </HeadingPrimitive>
-    </div>
+  <div class="aura aura-gold aura-lg">
+    <WindowTerminal>
+      <div slot="title" class="flex justify-center">
+        <HeadingPrimitive tag="h1" class="bg-base-100 rounded-box p-2">
+          alexander.{' '}
+          <span class="from-primary to-secondary bg-linear-to-r bg-clip-text text-transparent">
+            computer engineer.
+          </span>
+        </HeadingPrimitive>
+      </div>
+      <WindowTerminalCommand command="whoami" />
+      <p class="text-lg leading-relaxed">
+        Hi, I'm Alexander, writing from Germany. I've been fascinated by
+        computers for as long as I can remember, and the further down I look,
+        from the operating system to the transistor, the more there is to find.
+      </p>
+
+      <p class="mt-4 text-lg leading-relaxed">
+        This blog documents the projects where hardware and software meet.
+        Software only runs because hardware makes it possible. As I like to say
+        in German:{' '}
+        <span class="font-bold tracking-wide">Kein Strom, kein Code</span>.
+      </p>
+    </WindowTerminal>
   </div>
-
-  <WindowTerminal title="About Me">
-    <WindowTerminalCommand command="whoami" />
-    <p class="text-lg leading-relaxed">
-      I am a Computer Engineer from Germany with a lifelong fascination for
-      hardware and systems architecture. My work is driven by a passion for
-      solving complex technical challenges and developing high-impact products.
-      This blog serves as a platform where I document my latest projects and
-      share technical insights with the global engineering community.
-    </p>
-
-    <p class="mt-4 text-lg leading-relaxed">
-      I work across both hardware and software, and I've always understood their
-      relationship clearly: software can only run because hardware makes it
-      possible. As I like to say in German: <span
-        class="font-bold tracking-wide">Kein Strom, kein Code</span
-      >.
-    </p>
-    <Bento
-      client:load
-      feature={optGalleryMain}
-      collection={postsCollection}
-      maxPosts={8}
-    >
-      I'm always up for a good conversation, whether it's about this blog,
-      something you're building, or an idea worth exploring. Reach out if any of
-      it resonates, or click around, the other tiles here jump to random posts.
-    </Bento>
-  </WindowTerminal>
 
   <HeadingFancy title="Q/A" />
   <div class="mx-auto">
-    <Chat authorAvatar={avatarAuthorResized} client:load
-      ><strong>
-        Hey! I put together some questions you might have. Let's go.
-      </strong></Chat
-    >
+    <ChatAuthor avatar={avatarAuthorResized} client:load>
+      Hey! I've answered some questions you might have. Let's go.
+    </ChatAuthor>
 
-    {
-      aboutCollectionRendered.map(({ entry, Content }) => {
-        return (
-          <Fragment>
-            <Chat client:load>{entry.data.prompt}</Chat>
-            <Chat
-              client:load
-              authorAvatar={avatarAuthorResized}
-              status={entry.data.context}
-            >
-              <Content />
-            </Chat>
-          </Fragment>
-        );
-      })
-    }
+    {aboutCollectionRendered.map(({ entry, Content }) => {
+      return (
+        <Fragment>
+          <ChatYou client:load question={entry.data.prompt} />
+          <ChatAuthor
+            client:load
+            avatar={avatarAuthorResized}
+            context={entry.data.context}
+          >
+            <Content />
+          </ChatAuthor>
+        </Fragment>
+      );
+    })}
   </div>
 
   <HeadingFancy title="Community" />
 
   <Grid>
-    <CommunityCard title="TU Berlin Alumn">
+    <CommunityCard title="TU Berlin Alum">
       <p>
-        I'm an alum of <Anchor href="https://www.tu.berlin/communication/alumni"
-          >TU Berlin</Anchor
-        > Happy to chat about what studying there was like in general, or answer broader
-        questions about university life, choosing a program, or studying in Germany.
+        I'm an alum of{' '}
+        <Anchor
+          href="https://www.tu.berlin/communication/alumni"
+          class={anchorInline()}
+        >
+          TU Berlin
+        </Anchor>
+        . Happy to chat about what studying there was like in general, or answer
+        broader questions about university life, choosing a program, or studying
+        in Germany.
       </p>
       <div class="card-actions justify-end">
         <ContactMail
@@ -138,23 +128,21 @@ const aboutCollectionRendered = (
     </CommunityCard>
     <CommunityCard title="Codewars">
       <Anchor href={siteConfig.codewarsReferalUrl}>
-        {
-          ['light', 'dark'].map((theme) => (
-            <img
-              src={
-                theme === 'light'
-                  ? `${siteConfig.codewarsBadge}?theme=light`
-                  : siteConfig.codewarsBadge
-              }
-              alt="Codewars Badge"
-              loading="lazy"
-              class:list={[
-                'w-full',
-                theme === 'light' ? 'dark:hidden' : 'hidden dark:block',
-              ]}
-            />
-          ))
-        }
+        {['light', 'dark'].map((theme) => (
+          <img
+            src={
+              theme === 'light'
+                ? `${siteConfig.codewarsBadge}?theme=light`
+                : siteConfig.codewarsBadge
+            }
+            alt="Codewars Badge"
+            loading="lazy"
+            class:list={[
+              'w-full',
+              theme === 'light' ? 'dark:hidden' : 'hidden dark:block',
+            ]}
+          />
+        ))}
       </Anchor>
 
       <p>
@@ -163,23 +151,29 @@ const aboutCollectionRendered = (
         feedback from a big community of developers.
       </p>
       <div class="card-actions justify-end">
-        <Anchor href={siteConfig.codewarsReferalUrl} class="btn btn-primary"
-          >Join Me On Codewars!</Anchor
-        >
+        <Anchor href={siteConfig.codewarsReferalUrl} class="btn btn-primary">
+          Join Me On Codewars!
+        </Anchor>
       </div>
     </CommunityCard>
 
     <CommunityCard title="Home Assistant">
       <p>
-        <Anchor href="https://www.home-assistant.io/">Home Assistant</Anchor> is an
-        open-source home automation platform that puts you in control of your smart
-        devices, free from the cloud. I'm an active member of its community, where
-        I tinker with automations and swap ideas with other smart-home enthusiasts.
+        <Anchor href="https://www.home-assistant.io/" class={anchorInline()}>
+          Home Assistant
+        </Anchor>{' '}
+        is an open-source home automation platform that puts you in control of
+        your smart devices, free from the cloud. I'm an active member of its
+        community, where I tinker with automations and swap ideas with other
+        smart-home enthusiasts.
       </p>
       <div class="card-actions justify-end">
-        <Anchor href="https://discord.gg/home-assistant" class="btn btn-primary"
-          >Join the Community</Anchor
+        <Anchor
+          href="https://discord.gg/home-assistant"
+          class="btn btn-primary"
         >
+          Join the Community
+        </Anchor>
       </div>
     </CommunityCard>
     <CommunityCard title="The Programmer's Hangout">
@@ -189,9 +183,9 @@ const aboutCollectionRendered = (
         and stacks. As a developer myself, you'll often find me there.
       </p>
       <div class="card-actions justify-end">
-        <Anchor href="https://discord.gg/programming" class="btn btn-primary"
-          >Join the Community</Anchor
-        >
+        <Anchor href="https://discord.gg/programming" class="btn btn-primary">
+          Join the Community
+        </Anchor>
       </div>
     </CommunityCard>
   </Grid>
@@ -203,4 +197,17 @@ const aboutCollectionRendered = (
     firstPostDate={postsCollection.at(-1)?.date ?? new Date()}
     tagCount={tagsCollection.length}
   />
+  <HeadingFancy title="Keep Exploring" />
+
+  <Bento
+    client:load
+    feature={optGalleryMain}
+    collection={postsCollection}
+    maxPosts={8}
+  >
+    I'm always up for a good conversation, whether it's about this blog,
+    something you're building, or an idea worth exploring. Reach out at{' '}
+    <ContactMail client:visible /> if any of this resonates, or click around,
+    the tiles jump to random posts.
+  </Bento>
 </LayoutDefault>

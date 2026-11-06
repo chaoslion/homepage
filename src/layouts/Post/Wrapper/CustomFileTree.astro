@@ -7,4 +7,6 @@ interface Props extends FileTreeContent {}
 const { ...fileTreeRestProps } = Astro.props as Props;
 ---
 
-<FileTree {...fileTreeRestProps} class="not-prose" />
+<figure aria-label="File Tree">
+  <FileTree {...fileTreeRestProps} class="not-prose" />
+</figure>

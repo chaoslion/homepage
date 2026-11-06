@@ -27,7 +27,7 @@
     <Image
       src={feature}
       label="Myself"
-      class="rounded-box aspect-2/1 w-full object-cover"
+      class="rounded-box ring-base-content/10 aspect-2/1 w-full object-cover ring-1"
     />
     <figcaption class="flex items-center justify-center text-center">
       <p class="p-2 text-xs font-semibold sm:text-base md:text-lg">
@@ -44,7 +44,7 @@
       <Image
         src={post.cover}
         label={post.title}
-        class="rounded-box aspect-2/1 w-full object-cover grayscale transition duration-250 ease-in-out group-hover:grayscale-0"
+        class="rounded-box ring-base-content/10 aspect-2/1 w-full object-cover ring-1 grayscale transition duration-250 ease-in-out group-hover:grayscale-0"
       />
     </a>
   {/each}
