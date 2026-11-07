@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { AnchorText } from '#/components/ui';
+  import { AnchorTextInternal } from '#/components/ui';
   import type {
     BlogLinkInternalPostHash,
     BlogPostInternalLinkType,
@@ -22,7 +22,7 @@
   const hrefFinal = $derived(href ? `${href}#${target}` : `#${target}`);
 </script>
 
-<AnchorText
+<AnchorTextInternal
   href={hrefFinal}
   icon={typeIcon[type]}
   anchorClass="not-prose"

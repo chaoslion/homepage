@@ -30,6 +30,7 @@
     "astro-ai-robots-txt": "^0.1.5",
     "astro-compressor": "^2.0.1",
     "astro-seo": "^1.2.0",
+    "clsx": "^2.1.1",
     "daisyui": "^5.7.50",
     "eslint": "^10.13.0",
     "mathjax": "^4.1.3",

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  import { Icon } from '#/components/ui';
+  import { Anchor, Icon } from '#/components/ui';
   import { iconFlex } from '#/lib/css';
   import { siteConfig } from '#content';
 
@@ -16,8 +16,8 @@
     {siteConfig.description} &mdash;
     <cite class="text-accent">
       {#if siteConfig.description_href}
-        <a href={siteConfig.description_href}
-          >{siteConfig.description_credits}</a
+        <Anchor href={siteConfig.description_href}
+          >{siteConfig.description_credits}</Anchor
         >
       {:else}
         {siteConfig.description_credits}

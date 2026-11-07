@@ -11,6 +11,7 @@ export { default as HeadingFlip } from './HeadingFlip.svelte';
 export { default as Icon } from './Icon.svelte';
 export { default as AnchorText } from './AnchorText.svelte';
 export { default as AnchorTextExternal } from './AnchorTextExternal.svelte';
+export { default as AnchorTextInternal } from './AnchorTextInternal.svelte';
 export { default as Image } from './Image.svelte';
 export { default as NavMenuItem } from './NavMenuItem.svelte';
 export { default as SocialList } from './SocialList.svelte';

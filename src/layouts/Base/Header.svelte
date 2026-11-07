@@ -20,7 +20,7 @@
     </Anchor>
   </div>
 
-  <a href="/">
+  <Anchor href="/">
     <div
       class="custom-terminal-line hover:custom-terminal-line-hard flex flex-col gap-2 p-1 select-none"
     >
@@ -36,5 +36,5 @@
         />
       </Heading>
     </div>
-  </a>
+  </Anchor>
 </div>

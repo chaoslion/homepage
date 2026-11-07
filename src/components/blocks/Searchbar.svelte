@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { ClassValue } from 'svelte/elements';
+  import { clsx } from 'clsx';
 
   interface Props {
     class?: ClassValue;
@@ -24,9 +25,12 @@
   placeholder={`${enableHotkey ? 'hit / to ' : ''}grep -rn`}
   hotkey={enableHotkey}
   open-on-focus={true}
-  root-class={`relative block ${className ?? ''}`.trim()}
-  input-class={`input font-mono ${inputClass ?? ''}`.trim()}
-  panel-class={`mt-2 p-2 bg-base-100 shadow-sm overflow-hidden overflow-y-auto max-h-[min(60vh,30rem)] ${panelClass ?? ''}`.trim()}
+  root-class={clsx('relative block', className)}
+  input-class={clsx('input font-mono', inputClass)}
+  panel-class={clsx(
+    'mt-2 p-2 bg-base-100 shadow-sm overflow-hidden overflow-y-auto max-h-[min(60vh,30rem)]',
+    panelClass,
+  )}
   empty-class="select-none bg-error rounded-sm text-error-content px-1 py-2 text-center"
   mark-class="bg-accent text-accent-content px-px py-0 rounded-sm"
   suggest-class="border-b border-base-200 list-none italic space-y-0.5 mb-2"

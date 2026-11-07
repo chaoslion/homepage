@@ -2,7 +2,7 @@
   import type { GetImageResult } from 'astro';
   import { onMount, type Snippet } from 'svelte';
 
-  import { Grid, Image } from '#/components/ui';
+  import { Anchor, Grid, Image } from '#/components/ui';
   import { shuffleCollection } from '#/data/blog-tools';
   import type { PostsCollectionItem } from '#/types/collections';
   import { siteConfig } from '#content';
@@ -37,15 +37,15 @@
   </figure>
 
   {#each randomCollection as post}
-    <a
+    <Anchor
       href={post.href}
-      class={`group mx-auto block w-full ${siteConfig.posts.previewCoverClass}`}
+      class={['group mx-auto block w-full', siteConfig.posts.previewCoverClass]}
     >
       <Image
         src={post.cover}
         label={post.title}
         class="rounded-box ring-base-content/10 aspect-2/1 w-full object-cover ring-1 grayscale transition duration-250 ease-in-out group-hover:grayscale-0"
       />
-    </a>
+    </Anchor>
   {/each}
 </Grid>

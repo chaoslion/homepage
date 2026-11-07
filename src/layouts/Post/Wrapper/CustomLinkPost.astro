@@ -1,5 +1,5 @@
 ---
-import { AnchorText } from '#/components/ui';
+import { AnchorTextInternal } from '#/components/ui';
 import { getBlogPostsCollection } from '#/data/blog';
 import type {
   BlogLinkInternalPostHash,
@@ -22,15 +22,13 @@ const hash: BlogLinkInternalPostHash | undefined = hashTarget
   : undefined;
 ---
 
-{
-  hash ? (
-    <AnchorPostHash href={post.href} {label} {...hash} />
-  ) : (
-    <AnchorText
-      href={post.href}
-      text={label ?? post.title}
-      icon="mdi--book-open-page-variant-outline"
-      anchorClass="not-prose"
-    />
-  )
-}
+{hash ? (
+  <AnchorPostHash href={post.href} {label} {...hash} />
+) : (
+  <AnchorTextInternal
+    href={post.href}
+    text={label ?? post.title}
+    icon="mdi--book-open-page-variant-outline"
+    anchorClass="not-prose"
+  />
+)}

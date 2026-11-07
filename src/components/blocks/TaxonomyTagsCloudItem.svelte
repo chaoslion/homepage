@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Anchor } from '#/components/ui';
   import type { TagsCollectionItem } from '#/types/collections';
 
   interface Props {
@@ -23,7 +24,7 @@
   const postsLabel = $derived(posts > 99 ? '99+' : posts);
 </script>
 
-<a
+<Anchor
   href={tag.href}
   class={[
     'btn inline-flex gap-1 font-mono',
@@ -37,4 +38,4 @@
 >
   {tag.title}
   <span class="text-primary">{postsLabel}</span>
-</a>
+</Anchor>

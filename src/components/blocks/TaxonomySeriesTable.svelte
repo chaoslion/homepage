@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Anchor } from '#/components/ui';
   import { anchorInline } from '#/lib/css';
   import type { SeriesCollectionPosts } from '#/types/collections';
 
@@ -24,12 +25,12 @@
       {#each postsSorted as item}
         <tr>
           <td>
-            <a
+            <Anchor
               href={item.series.href}
               class={[anchorInline(), 'font-bold underline-offset-2']}
             >
               {item.series.title}
-            </a>
+            </Anchor>
           </td>
 
           <td class="max-w-xs">

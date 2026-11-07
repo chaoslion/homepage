@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Anchor } from '#/components/ui';
   import { anchorInline } from '#/lib/css';
   import type { CategoriesCollectionPosts } from '#/types/collections';
 
@@ -28,12 +29,12 @@
         {@const pct = Math.round((item.posts / totalPosts) * 100)}
         <tr>
           <td>
-            <a
+            <Anchor
               href={item.category.href}
               class={[anchorInline(), 'font-bold underline-offset-2']}
             >
               {item.category.title}
-            </a>
+            </Anchor>
           </td>
 
           <td class="max-w-xs">

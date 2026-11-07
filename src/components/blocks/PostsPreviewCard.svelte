@@ -1,5 +1,11 @@
 <script lang="ts">
-  import { AnchorText, Badge, Card, Icon, Image } from '#/components/ui';
+  import {
+    Anchor,
+    AnchorTextInternal,
+    Badge,
+    Card,
+    Image,
+  } from '#/components/ui';
   import type { PostsCollectionItem } from '#/types/collections';
   import { siteConfig } from '#content';
 
@@ -20,22 +26,25 @@
 </script>
 
 <Card
-  class={`mx-auto w-full ${embed ? siteConfig.posts.previewCoverClass : ''}`.trim()}
+  class={[
+    'mx-auto w-full',
+    embed ? siteConfig.posts.previewCoverClass : undefined,
+  ]}
 >
   {#if embed}
     <figure class="[overflow-anchor:none]">
-      <a href={post.href} class="group block w-full">
+      <Anchor href={post.href} class="group block w-full">
         <Image
           src={post.cover}
           label={post.title}
           class="aspect-2/1 w-full object-cover ease-in-out group-hover:scale-110 motion-safe:transition-transform motion-safe:duration-250"
         />
-      </a>
+      </Anchor>
     </figure>
   {/if}
   <div class="card-body">
     <div class="card-actions items-center">
-      <a href={post.category.href}>
+      <Anchor href={post.category.href}>
         <Badge
           label="Category"
           labelIcon={post.category.icon}
@@ -43,9 +52,9 @@
           text={post.category.title}
           textColor="badge-primary"
         />
-      </a>
+      </Anchor>
       {#if post.series}
-        <a href={post.series.href}>
+        <Anchor href={post.series.href}>
           <Badge
             label="Series"
             labelIcon="mdi--layers-outline"
@@ -53,7 +62,7 @@
             text={post.series.title}
             textColor="badge-primary"
           />
-        </a>
+        </Anchor>
       {/if}
 
       {#if post.isUpdated}
@@ -80,27 +89,34 @@
     </div>
 
     {#if embed}
-      <h2 class="card-title">{post.title}</h2>
+      <h2 class="card-title">
+        <Anchor href={post.href} class="hover:text-primary transition-colors">
+          {post.title}
+        </Anchor>
+      </h2>
     {/if}
 
-    <div class="border-accent border-l-2 py-2 pl-2">
-      <p>
+    <div class="text-base-content/75 mt-2 text-sm">
+      <p class="leading-relaxed">
         {post.summary}
-        {#if embed}
-          <AnchorText
+      </p>
+
+      {#if embed}
+        <div class="mt-2">
+          <AnchorTextInternal
             href={post.href}
             text="Read more"
             aria="Read more about {post.title}"
           />
-        {/if}
-      </p>
+        </div>
+      {/if}
     </div>
 
-    <div class="card-actions">
+    <div class="card-actions mt-auto pt-4">
       {#each postTags as item}
-        <a href={item.href} class="btn btn-xs font-mono">
+        <Anchor href={item.href} class="btn btn-xs font-mono">
           {item.title}
-        </a>
+        </Anchor>
       {/each}
     </div>
   </div>

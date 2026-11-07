@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Icon } from '#/components/ui';
+  import { Anchor, Icon } from '#/components/ui';
   import type { PostsCollectionItem } from '#/types/collections';
 
   interface Props {
@@ -24,13 +24,13 @@
       </div>
       <div>
         {#if !activeSeriesItem}
-          <a href={item.href}>
+          <Anchor href={item.href}>
             <img
               class="rounded-box size-32 object-cover"
               alt={item.title}
               src={item.cover.src}
             />
-          </a>
+          </Anchor>
         {:else}
           <img
             class="rounded-box size-32 object-cover"
@@ -46,13 +46,13 @@
         </div>
       </div>
       {#if !activeSeriesItem}
-        <a
+        <Anchor
           class="btn btn-square btn-ghost"
           href={item.href}
-          aria-label={item.title}
+          aria={item.title}
         >
           <Icon name="mdi--play" class="size-[1.2em]" />
-        </a>
+        </Anchor>
       {/if}
     </li>
   {/each}

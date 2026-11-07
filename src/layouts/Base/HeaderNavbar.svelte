@@ -134,9 +134,7 @@
           (themeManager.isLight && theme === 'light') ||
           (!themeManager.isLight && theme === 'dark')}
         <li
-          class={themeManager.isUnknown || themeIsDisabled
-            ? 'menu-disabled'
-            : undefined}
+          class={{ 'menu-disabled': themeManager.isUnknown || themeIsDisabled }}
         >
           <button
             onclick={() => themeManager.switch(theme)}

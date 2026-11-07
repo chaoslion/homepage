@@ -3,6 +3,7 @@
   import type { NavLink } from '#/types/site';
   import { siteConfig } from '#content';
 
+  import Anchor from './Anchor.svelte';
   import Icon from './Icon.svelte';
 
   interface Props {
@@ -12,7 +13,7 @@
   const { nav, url }: Props = $props();
 </script>
 
-<a
+<Anchor
   href={nav.link.href}
   class={[
     iconFlex(),
@@ -21,4 +22,4 @@
 >
   <Icon name={nav.icon} class={siteConfig.navIconClass} />
   {nav.link.label}
-</a>
+</Anchor>

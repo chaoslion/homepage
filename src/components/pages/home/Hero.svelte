@@ -1,8 +1,13 @@
 <script lang="ts">
   import type { GetImageResult, ImageMetadata } from 'astro';
 
-  import { Heading, HeadingFlip, Image } from '#/components/ui';
-  import Anchor from '#/components/ui/Anchor.svelte';
+  import {
+    Anchor,
+    AnchorText,
+    Heading,
+    HeadingFlip,
+    Image,
+  } from '#/components/ui';
   import { siteConfig } from '#content';
 
   interface Props {
@@ -30,16 +35,19 @@
       <p class="py-6 text-xl">
         Welcome! I'm Alex. I spend my days writing production-grade code,
         architecting systems, and navigating the messy reality of software
-        engineering. Check out <a href="/now" class="link link-primary"
-          >what I'm doing now</a
-        >
+        engineering. Check out <AnchorText
+          href="/now"
+          text="what I'm doing now"
+        />
         or the
-        <a href="/uses" class="link link-primary">tools and tech I use</a>. This
-        blog is where I share practical insights, hard-learned lessons, and
-        honest takes on computer science and software development.
+        <AnchorText href="/uses" text="tools and tech I use" />. This blog is
+        where I share practical insights, hard-learned lessons, and honest takes
+        on computer science and software development.
       </p>
       <div class="flex flex-wrap items-center gap-3 max-lg:justify-center">
-        <a href="/about" class="btn btn-primary btn-lg">More About Me</a>
+        <Anchor href="/about" class="btn btn-primary btn-lg"
+          >More About Me</Anchor
+        >
       </div>
     </div>
   </div>

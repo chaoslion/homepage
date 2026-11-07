@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Icon } from '#/components/ui';
+  import { Anchor, Icon } from '#/components/ui';
   import type { PostsCollectionItem } from '#/types/collections';
 
   interface Props {
@@ -22,17 +22,23 @@
 {/snippet}
 
 <div class="join grid grid-cols-2">
-  <a href={nextPost.href} class="join-item btn btn-outline inline-flex gap-1">
+  <Anchor
+    href={nextPost.href}
+    class="join-item btn btn-outline inline-flex gap-1"
+  >
     {@render buttonFn(
       nextPost.title,
       nextPostLimit ? 'mdi--arrow-u-right-top' : 'mdi--arrow-left-thin',
     )}
-  </a>
-  <a href={prevPost.href} class="join-item btn btn-outline inline-flex gap-1">
+  </Anchor>
+  <Anchor
+    href={prevPost.href}
+    class="join-item btn btn-outline inline-flex gap-1"
+  >
     {@render buttonFn(
       prevPost.title,
       prevPostLimit ? 'mdi--arrow-u-left-top' : 'mdi--arrow-right-thin',
       true,
     )}
-  </a>
+  </Anchor>
 </div>

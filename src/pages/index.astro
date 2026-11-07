@@ -5,7 +5,7 @@ import profilePicture from '#/assets/images/profile.jpg';
 import PostsPreviewGrid from '#/components/blocks/PostsPreviewGrid.svelte';
 import Hero from '#/components/pages/home/Hero.svelte';
 import TechStack from '#/components/pages/home/TechStack.svelte';
-import { HeadingFancy, Icon } from '#/components/ui';
+import { Anchor, HeadingFancy, Icon } from '#/components/ui';
 import { getBlogPostsCollectionSorted } from '#/data/blog';
 import LayoutDefault from '#/layouts/Default.astro';
 import { iconFlex } from '#/lib/css';
@@ -41,16 +41,22 @@ const profilePictureOpt = await getImage({
   <section>
     <PostsPreviewGrid client:visible posts={postCollectionLimited} />
     <div class="mt-8 flex items-center justify-center gap-2">
-      <a href="/posts" class="btn btn-primary">Browse All</a>
-      <a href="/posts/random" class:list={['btn btn-primary group', iconFlex()]}
-        ><Icon
+      <Anchor href="/posts" class="btn btn-primary">
+        Browse All
+      </Anchor>
+      <Anchor
+        href="/posts/random"
+        class={['btn btn-primary group', iconFlex()]}
+      >
+        <Icon
           name="mdi--dice"
           class:list={[
             'motion-safe:paused motion-safe:group-hover:running motion-safe:animate-[spin_5s_linear_infinite]',
             siteConfig.navIconClass,
           ]}
-        /> Random</a
-      >
+        />
+        Random
+      </Anchor>
     </div>
   </section>
 </LayoutDefault>
