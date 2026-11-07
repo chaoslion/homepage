@@ -17,27 +17,25 @@
         <hr class="bg-accent" />
       {/if}
 
-      <!-- Icons bleiben in Accent-Orange -->
-      <div class="timeline-middle text-accent">
+      <div class="timeline-middle text-primary">
         <Icon name={item.icon} class="size-7 md:mx-2" />
       </div>
 
-      <!-- Klassische Ausrichtung wie in deinem Original -->
       <div
-        class={index % 2 === 0
-          ? 'timeline-start mb-6 md:text-end'
-          : 'timeline-end mb-6'}
+        class={[
+          'mb-6',
+          index % 2 === 0 ? 'timeline-start md:text-end' : 'timeline-end',
+        ]}
       >
-        <!-- Zurück zum lockeren Monospace Italic -->
-        <span class="text-base-content/80 mb-1 block font-mono text-sm italic">
+        <span class="text-primary mb-1 block font-mono text-sm italic">
           {item.label ?? category}
         </span>
 
-        <!-- Badges mit solidem base-200 und leichter Aufhellung/Border -->
         <div
-          class="flex flex-wrap gap-1.5 {index % 2 === 0
-            ? 'md:justify-end'
-            : ''}"
+          class={[
+            'flex flex-wrap gap-1.5',
+            { 'md:justify-end': index % 2 === 0 },
+          ]}
         >
           {#each item.techs as tech}
             <span
