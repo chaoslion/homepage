@@ -14,17 +14,31 @@
 </script>
 
 <div class={className}>
-  <Heading {tag} {id}>
-    <span class="bg-accent inline-block h-6 w-2 rounded-sm"></span>
-    {title}
-    {#if subtitle && preposition}
-      {preposition}
-      <span class="text-base-content/50">{subtitle}</span>{/if}
-  </Heading>
-  {#if subtitle && !preposition}
-    <p class="text-base-content/50 mt-1 text-base font-normal sm:text-lg">
-      {subtitle}
-    </p>
-  {/if}
-  <div class="from-base-300 to-base-100 mt-1 h-0.5 bg-linear-to-r"></div>
+  <div class="flex items-stretch gap-3">
+    <!-- Accent Bar: dynamically spans full height of title + subtitle -->
+    <div
+      aria-hidden="true"
+      class="bg-accent w-2 shrink-0 rounded-xs sm:w-2.5"
+    ></div>
+
+    <div class="flex min-w-0 flex-col justify-center">
+      <Heading {tag} {id}>
+        <span>{title}</span>
+        {#if preposition}
+          <span class="font-normal">{preposition}</span>
+        {/if}
+      </Heading>
+
+      {#if subtitle}
+        <p class="text-base-content/60 mt-0.5 text-sm font-normal sm:text-base">
+          {subtitle}
+        </p>
+      {/if}
+    </div>
+  </div>
+
+  <div
+    aria-hidden="true"
+    class="from-base-300 to-base-100 mt-2 h-0.5 bg-linear-to-r"
+  ></div>
 </div>
