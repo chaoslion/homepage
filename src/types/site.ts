@@ -54,13 +54,14 @@ interface Build {
 interface PostsConfig {
   codeBlockLanguageOverride: Record<string, string>;
   indexMax: number;
+  introLabel: (legacy: boolean) => string | undefined;
   legacyCutoff: Date;
   maxRelated: number;
   maxSummary: number;
   maxTOCDepth: number;
   maxTags: number;
-  previewCoverWidth: number;
   previewCoverClass: string;
+  previewCoverWidth: number;
   previewMaxTags: number;
   previewPagination: number;
   previewPaginationCount: number;

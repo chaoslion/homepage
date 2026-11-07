@@ -147,6 +147,19 @@ if (relatedCollection.length > 0) {
     title: 'See Also',
   });
 }
+
+const tocIntroLabel = siteConfig.posts.introLabel(post.isLegacy);
+let finalHeadingLinks = [];
+if (tocIntroLabel !== undefined) {
+  finalHeadingLinks.push({
+    depth: 0,
+    link: {
+      href: '#content',
+      label: tocIntroLabel,
+    },
+  });
+}
+finalHeadingLinks.push(...headingLinks);
 ---
 
 <Base
@@ -164,9 +177,7 @@ if (relatedCollection.length > 0) {
 
       <PostIndexList
         postId={post.slugName}
-        headingLinks={headingLinks.length > 0
-          ? headingLinks
-          : [{ depth: 0, link: { href: '#x-post', label: 'Main' } }]}
+        headingLinks={finalHeadingLinks}
         headingLinksAdditional={[...appendixHeadings.values()].map((item) => ({
           link: {
             href: `#${item.id}`,
@@ -183,7 +194,7 @@ if (relatedCollection.length > 0) {
       <div class="divider"></div>
     </div>
     <div
-      id="x-post"
+      id="content"
       class="prose prose-blockquote:not-italic prose-blockquote:border-l-accent mx-auto"
       data-pswp-gallery
     >
@@ -202,25 +213,23 @@ if (relatedCollection.length > 0) {
     </ContainerConstrain>
   </Container>
 
-  {
-    [...appendixHeadings.entries()].map(([key, value]) => (
-      <Container>
-        <ContainerConstrain>
-          <HeadingFancy {...value} />
-          {key === 'resources' && (
-            <PostResourcesList resources={globalResourcesConsumed} />
-          )}
-          {key === 'series' && (
-            <PostSeriesList
-              {post}
-              posts={filterPostsCollectionBySeries(collection, post.series!)}
-            />
-          )}
-          {key === 'related' && (
-            <PostsPreviewGrid client:visible posts={relatedCollection} />
-          )}
-        </ContainerConstrain>
-      </Container>
-    ))
-  }
+  {[...appendixHeadings.entries()].map(([key, value]) => (
+    <Container>
+      <ContainerConstrain>
+        <HeadingFancy {...value} />
+        {key === 'resources' && (
+          <PostResourcesList resources={globalResourcesConsumed} />
+        )}
+        {key === 'series' && (
+          <PostSeriesList
+            {post}
+            posts={filterPostsCollectionBySeries(collection, post.series!)}
+          />
+        )}
+        {key === 'related' && (
+          <PostsPreviewGrid client:visible posts={relatedCollection} />
+        )}
+      </ContainerConstrain>
+    </Container>
+  ))}
 </Base>
