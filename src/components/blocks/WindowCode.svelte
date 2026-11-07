@@ -24,6 +24,7 @@
   }: Props = $props();
   let codeBody: HTMLDivElement;
   let copied = $state(false);
+  const attributionAtBodyCopy = false;
 
   function prepareText(content: string): string {
     const attribution: CodeBlockAttribution = {
@@ -41,9 +42,9 @@
   }
 
   async function handleCopy(event: ClipboardEvent) {
-    if (!event.clipboardData) return;
-    const selection = window.getSelection()?.toString() ?? '';
+    if (!event.clipboardData || !attributionAtBodyCopy) return;
     event.preventDefault();
+    const selection = window.getSelection()?.toString() ?? '';
     event.clipboardData.setData('text/plain', prepareText(selection));
   }
 
