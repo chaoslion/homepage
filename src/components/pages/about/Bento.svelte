@@ -22,12 +22,12 @@
   });
 </script>
 
-<Grid class="items-center">
-  <figure class="mt-8 flex flex-col sm:col-span-2 sm:row-span-2">
+<Grid class="mt-8">
+  <figure class="flex flex-col sm:col-span-2 sm:row-span-2 lg:row-span-3">
     <Image
       src={feature}
       label="Myself"
-      class="rounded-box ring-base-content/10 aspect-2/1 w-full object-cover ring-1"
+      class="rounded-box ring-base-content/10 aspect-4/3 w-full object-cover ring-1 lg:aspect-auto lg:min-h-0 lg:grow lg:basis-0"
     />
     <figcaption class="flex items-center justify-center text-center">
       <p class="p-2 text-xs font-semibold sm:text-base md:text-lg">
@@ -39,13 +39,21 @@
   {#each randomCollection as post}
     <Anchor
       href={post.href}
-      class={['group mx-auto block w-full', siteConfig.posts.previewCoverClass]}
+      class={[
+        'group rounded-box ring-base-content/10 relative mx-auto block w-full overflow-hidden ring-1',
+        siteConfig.posts.previewCoverClass,
+      ]}
     >
       <Image
         src={post.cover}
         label={post.title}
-        class="rounded-box ring-base-content/10 aspect-2/1 w-full object-cover ring-1 grayscale transition duration-250 ease-in-out group-hover:grayscale-0"
+        class="aspect-2/1 w-full object-cover transition duration-250 ease-in-out group-hover:grayscale-0 pointer-fine:grayscale"
       />
+      <span
+        class="pointer-events-none absolute inset-x-0 bottom-0 bg-linear-to-t from-black/95 via-black/70 to-transparent px-3 pt-16 pb-3 text-sm leading-snug font-semibold text-white [text-shadow:0_1px_3px_rgb(0_0_0/0.8)]"
+      >
+        {post.title}
+      </span>
     </Anchor>
   {/each}
 </Grid>

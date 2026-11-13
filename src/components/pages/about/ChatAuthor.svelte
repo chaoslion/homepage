@@ -19,7 +19,7 @@
 <Chat
   class="chat-start"
   avatarClass="avatar-online"
-  bubbleClass="chat-bubble-neutral"
+  bubbleClass="chat-bubble-neutral max-w-3xl leading-relaxed"
   name={siteConfig.authorName}
   status={context}
 >
@@ -30,9 +30,8 @@
   {/snippet}
   <div
     class={[
-      'text-sm leading-relaxed',
       'text-neutral-content',
-      'prose',
+      'prose xl:prose-lg',
       'prose-p:text-neutral-content',
       'prose-strong:text-neutral-content',
       'prose-a:text-neutral-content',

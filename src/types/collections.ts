@@ -1,5 +1,5 @@
 import type { GetImageResult } from 'astro';
-import type { RenderResult } from 'astro:content';
+import type { CollectionEntry, RenderResult } from 'astro:content';
 import type { ReadTimeResults } from 'reading-time';
 
 export interface ResourceCollectionItem {
@@ -14,6 +14,14 @@ export interface SeriesCollectionItem {
   href: string;
   title: string;
   description: string;
+}
+
+export interface AboutCollectionItem {
+  entry: CollectionEntry<'about'>;
+  id: string;
+  prompt: string;
+  context: string;
+  slug: string;
 }
 
 export interface TagsCollectionItem {

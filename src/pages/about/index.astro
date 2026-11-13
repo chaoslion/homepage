@@ -1,6 +1,6 @@
 ---
 import { getImage } from 'astro:assets';
-import { getCollection, render } from 'astro:content';
+import { render } from 'astro:content';
 
 import avatarAuthor from '#/assets/images/profile.jpg';
 import WindowTerminal from '#/components/blocks/WindowTerminal.svelte';
@@ -17,6 +17,7 @@ import {
   Heading as HeadingPrimitive,
 } from '#/components/ui';
 import Grid from '#/components/ui/Grid.svelte';
+import { getAboutCollection } from '#/data/about';
 import { getBlogPostsCollectionSorted, getTagsCollection } from '#/data/blog';
 import LayoutDefault from '#/layouts/Default.astro';
 import { anchorInline } from '#/lib/css';
@@ -41,15 +42,18 @@ const optGalleryMain = await getImage({
 const postsCollection = await getBlogPostsCollectionSorted();
 const tagsCollection = await getTagsCollection();
 
-const entries = await getCollection('about');
-const aboutCollectionRendered = (
-  await Promise.all(
-    entries.map(async (entry) => {
-      const { Content } = await render(entry);
-      return { entry, Content };
-    }),
-  )
-).toSorted((a, b) => a.entry.id.localeCompare(b.entry.id));
+const entries = await getAboutCollection();
+const aboutCollectionRendered = await Promise.all(
+  entries.map(async (i) => {
+    const { Content } = await render(i.entry);
+    return { i, Content };
+  }),
+);
+
+const MAX_VISIBLE_CHATS = 3;
+const chatsVisible = aboutCollectionRendered.slice(0, MAX_VISIBLE_CHATS);
+const chatsHidden = aboutCollectionRendered.slice(MAX_VISIBLE_CHATS);
+const lastSlug = aboutCollectionRendered.at(-1)?.i.slug;
 ---
 
 <LayoutDefault title="About" supportsSearchIndex={true} supportsIndex={true}>
@@ -65,54 +69,92 @@ const aboutCollectionRendered = (
       </div>
       <WindowTerminalCommand command="whoami" />
       <p class="text-lg leading-relaxed">
-        Hi, I'm Alexander, writing from Germany. I've been fascinated by
-        computers for as long as I can remember, and the further down I look,
-        from the operating system to the transistor, the more there is to find.
-      </p>
-
-      <p class="mt-4 text-lg leading-relaxed">
-        This blog documents the projects where hardware and software meet.
-        Software only runs because hardware makes it possible. As I like to say
-        in German:{' '}
+        Hi, I’m Alexander, writing from Germany. I’ve been into computers for as
+        long as I can remember. I started with software, then got pulled toward
+        the hardware underneath it, which is how I became a computer engineer.
+        Along the way I realized that code only runs when physical power is
+        driving it, so I gave that reality a motto of my own:{' '}
         <span class="font-bold tracking-wide">Kein Strom, kein Code</span>.
       </p>
     </WindowTerminal>
   </div>
 
-  <HeadingFancy title="Q/A" />
-  <div class="mx-auto">
+  <HeadingFancy title="Q&A" />
+
+  <div class="mx-auto max-w-5xl">
     <ChatAuthor avatar={avatarAuthorResized} client:load>
       Hey! I've answered some questions you might have. Let's go.
     </ChatAuthor>
 
-    {aboutCollectionRendered.map(({ entry, Content }) => {
+    {chatsVisible.map(({ i, Content }) => {
       return (
         <Fragment>
-          <ChatYou client:load question={entry.data.prompt} />
+          <ChatYou
+            client:load
+            question={i.prompt}
+            slug={`qa-${i.slug}`}
+            delivered={i.slug === lastSlug}
+          />
           <ChatAuthor
             client:load
             avatar={avatarAuthorResized}
-            context={entry.data.context}
+            context={i.context}
           >
             <Content />
           </ChatAuthor>
         </Fragment>
       );
     })}
+    {chatsHidden.length > 0 && (
+      <details class="collapse group">
+        <summary class="btn btn-sm bg-base-200 hover:bg-base-300 border-0 rounded-full w-fit mx-auto my-2 flex items-center group-open:hidden">
+          Show full Q&amp;A ({chatsHidden.length} more)
+        </summary>
+        <div class="collapse-content px-0">
+          {chatsHidden.map(({ i, Content }) => {
+            return (
+              <Fragment>
+                <ChatYou
+                  client:load
+                  question={i.prompt}
+                  slug={`qa-${i.slug}`}
+                  delivered={i.slug === lastSlug}
+                />
+                <ChatAuthor
+                  client:load
+                  avatar={avatarAuthorResized}
+                  context={i.context}
+                >
+                  <Content />
+                </ChatAuthor>
+              </Fragment>
+            );
+          })}
+        </div>
+      </details>
+    )}
   </div>
+
+  <HeadingFancy title="By the Numbers" />
+
+  <Stats
+    client:visible
+    firstPostDate={postsCollection.at(-1)?.date ?? new Date()}
+    tagCount={tagsCollection.length}
+  />
 
   <HeadingFancy title="Community" />
 
-  <Grid>
+  <Grid layout="grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
     <CommunityCard title="TU Berlin Alum">
+      {/* prettier-ignore */}
       <p>
         I'm an alum of{' '}
         <Anchor
           href="https://www.tu.berlin/communication/alumni"
           class={anchorInline()}
+          >TU Berlin</Anchor
         >
-          TU Berlin
-        </Anchor>
         . Happy to chat about what studying there was like in general, or answer
         broader questions about university life, choosing a program, or studying
         in Germany.
@@ -122,7 +164,7 @@ const aboutCollectionRendered = (
           client:visible
           type="alum"
           anchorClass="btn btn-primary"
-          text="Feel free to reach out anytime!"
+          text="Ask me about TU Berlin!"
         />
       </div>
     </CommunityCard>
@@ -152,16 +194,17 @@ const aboutCollectionRendered = (
       </p>
       <div class="card-actions justify-end">
         <Anchor href={siteConfig.codewarsReferalUrl} class="btn btn-primary">
-          Join Me On Codewars!
+          Join me on Codewars!
         </Anchor>
       </div>
     </CommunityCard>
 
     <CommunityCard title="Home Assistant">
+      {/* prettier-ignore */}
       <p>
-        <Anchor href="https://www.home-assistant.io/" class={anchorInline()}>
-          Home Assistant
-        </Anchor>{' '}
+        <Anchor href="https://www.home-assistant.io/" class={anchorInline()}
+          >Home Assistant</Anchor
+        >{' '}
         is an open-source home automation platform that puts you in control of
         your smart devices, free from the cloud. I'm an active member of its
         community, where I tinker with automations and swap ideas with other
@@ -190,24 +233,16 @@ const aboutCollectionRendered = (
     </CommunityCard>
   </Grid>
 
-  <HeadingFancy title="By the Numbers" />
-
-  <Stats
-    client:visible
-    firstPostDate={postsCollection.at(-1)?.date ?? new Date()}
-    tagCount={tagsCollection.length}
-  />
   <HeadingFancy title="Keep Exploring" />
 
   <Bento
     client:load
     feature={optGalleryMain}
     collection={postsCollection}
-    maxPosts={8}
+    maxPosts={6}
   >
-    I'm always up for a good conversation, whether it's about this blog,
-    something you're building, or an idea worth exploring. Reach out at{' '}
-    <ContactMail client:visible /> if any of this resonates, or click around,
-    the tiles jump to random posts.
+    Got a question, a project, or an idea you'd like to bounce around? Write me
+    at <ContactMail client:visible />. Or click around: the tiles jump to random
+    posts.
   </Bento>
 </LayoutDefault>

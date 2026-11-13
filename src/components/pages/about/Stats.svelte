@@ -1,7 +1,4 @@
 <script lang="ts">
-  import type { ClassValue } from 'svelte/elements';
-
-  import { Heading } from '#/components/ui';
   import Card from '#/components/ui/Card.svelte';
   import Grid from '#/components/ui/Grid.svelte';
   import { siteConfig } from '#content';
@@ -14,15 +11,16 @@
   const stats = $derived(siteConfig.stats(firstPostDate, tagCount));
 </script>
 
-<Grid>
+<Grid layout="grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6" class="items-stretch">
   {#each stats as stat}
-    <Card class="max-sm:mx-auto max-sm:w-fit">
-      <div class="card-body">
-        <div class="flex flex-col items-center justify-center">
-          <di class="text-base-content/75 text-sm">{stat.label}</di>
-          <div class="text-4xl">{stat.value()}</div>
-          <di class="text-base-content/75 text-sm italic">{stat.description}</di
-          >
+    <Card class="min-w-0">
+      <div class="card-body p-3 sm:p-4">
+        <div class="flex flex-col items-center justify-center text-center">
+          <div class="text-base-content/80 text-sm">{stat.label}</div>
+          <div class="text-3xl">{stat.value()}</div>
+          <div class="text-base-content/80 text-sm italic">
+            {stat.description}
+          </div>
         </div>
       </div>
     </Card>

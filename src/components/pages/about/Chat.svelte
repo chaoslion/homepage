@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, type Snippet } from 'svelte';
+  import type { Snippet } from 'svelte';
   import type { ClassValue } from 'svelte/elements';
 
   import { slideInOnVisible } from '#/lib/actions';
@@ -12,6 +12,7 @@
     children: Snippet;
     name: string;
     status?: string;
+    id?: string;
   }
 
   let {
@@ -22,14 +23,12 @@
     children,
     name,
     status = undefined,
+    id = undefined,
   }: Props = $props();
-  let currentTimeElement: HTMLTimeElement;
-  onMount(() => {
-    currentTimeElement.textContent = new Date().toDateString();
-  });
 </script>
 
 <div
+  {id}
   use:slideInOnVisible
   class={[
     'chat',
@@ -40,14 +39,13 @@
   <div class={['chat-image max-sm:hidden', 'avatar', avatarClass]}>
     {@render avatar()}
   </div>
-  <div class="chat-header">
+  <div class="chat-header text-sm">
     {name}
-    <time bind:this={currentTimeElement} class="text-xs opacity-50"></time>
   </div>
-  <div class={['chat-bubble md:max-w-4/5', bubbleClass]}>
+  <div class={['chat-bubble w-fit max-w-[85%]', bubbleClass]}>
     {@render children()}
   </div>
   {#if status !== undefined}
-    <div class="chat-footer opacity-75">{status}</div>
+    <div class="chat-footer text-sm opacity-80">{status}</div>
   {/if}
 </div>
