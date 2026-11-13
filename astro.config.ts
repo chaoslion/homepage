@@ -28,29 +28,23 @@ const contentBlogPostsImagesDirectory = 'assets';
 const isDev = process.env.NODE_ENV === 'development';
 
 export default defineConfig({
-  site: !isDev ? 'https://alex.jaehnel.info' : 'http://localhost:4321',
-  build: {
-    assetsPrefix: !isDev ? 'https://assets.alex.jaehnel.info' : undefined,
-  },
   adapter: node({
     mode: 'standalone',
     staticHeaders: true,
   }),
   // session: { driver: "redis", options: { url: process.env.REDIS_URL } },
-  integrations: [
-    mdx(),
-    svelte(),
-    partytown(),
-    aiRobotsTxt(),
-    sitemap({ filenameBase: 'site' }),
-    compressor({ gzip: true, brotli: false, zstd: false }),
-  ],
-  image: {
-    domains: ['img.youtube.com'],
-    responsiveStyles: false,
-    layout: 'none',
+  build: {
+    assetsPrefix: !isDev ? 'https://assets.alex.jaehnel.info' : undefined,
+  },
+  devToolbar: {
+    enabled: false,
   },
   fonts: [
+    {
+      provider: fontProviders.fontsource(),
+      name: 'Fira Code',
+      cssVariable: '--font-fira-code',
+    },
     {
       provider: fontProviders.fontsource(),
       name: 'Geist',
@@ -61,43 +55,52 @@ export default defineConfig({
       name: 'Space Grotesk',
       cssVariable: '--font-space-grotesk',
     },
-    {
-      provider: fontProviders.fontsource(),
-      name: 'Fira Code',
-      cssVariable: '--font-fira-code',
-    },
+  ],
+  image: {
+    domains: ['img.youtube.com'],
+    layout: 'none',
+    responsiveStyles: false,
+  },
+  integrations: [
+    aiRobotsTxt(),
+    compressor({ gzip: true, brotli: false, zstd: false }),
+    mdx(),
+    partytown(),
+    sitemap({ filenameBase: 'site' }),
+    svelte(),
   ],
   markdown: {
-    syntaxHighlight: {
-      type: 'shiki',
-      excludeLangs: ['math', 'asciimath'],
-    },
-    shikiConfig: {
-      transformers: [
-        transformerNotationFocus(),
-        transformerNotationHighlight(),
-        transformerNotationWordHighlight(),
-      ],
-      themes: {
-        light: 'github-light',
-        dark: 'github-dark',
-      },
-    },
     processor: satteri({
-      mdastPlugins: [
-        pluginSatteriBlog(
-          contentBlogPostsPath,
-          contentBlogPostsImagesDirectory,
-        ),
-      ],
       features: {
         directive: true,
         headingAttributes: true,
         math: true,
         smartPunctuation: true,
       },
+      mdastPlugins: [
+        pluginSatteriBlog(
+          contentBlogPostsPath,
+          contentBlogPostsImagesDirectory,
+        ),
+      ],
     }),
+    shikiConfig: {
+      themes: {
+        dark: 'github-dark',
+        light: 'github-light',
+      },
+      transformers: [
+        transformerNotationFocus(),
+        transformerNotationHighlight(),
+        transformerNotationWordHighlight(),
+      ],
+    },
+    syntaxHighlight: {
+      excludeLangs: ['math', 'asciimath'],
+      type: 'shiki',
+    },
   },
+  site: !isDev ? 'https://alex.jaehnel.info' : 'http://localhost:4321',
   vite: {
     define: {
       'import.meta.env.CUSTOM_BUILD_DATE': JSON.stringify(
@@ -114,12 +117,12 @@ export default defineConfig({
     esbuild: {
       drop: !isDev ? ['console', 'debugger'] : [],
     },
-    server: {
-      allowedHosts: ['.jaehnel.info'],
-    },
     plugins: [tailwindcss(), pluginBuildInfo(workspacePaths, isDev)],
     resolve: {
       tsconfigPaths: true,
+    },
+    server: {
+      allowedHosts: ['.jaehnel.info'],
     },
   },
 });
