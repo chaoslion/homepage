@@ -26,7 +26,7 @@
   </div>
 
   <div class={iconFlex()}>
-    {`${currentYear} - ${siteConfig.copyright}`}
     <Icon name="mdi--copyright" class="size-5" />
+    {`${currentYear}. ${siteConfig.copyright}`}
   </div>
 </div>
