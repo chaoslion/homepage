@@ -30,7 +30,7 @@
       </Heading>
 
       {#if subtitle}
-        <p class="text-base-content/60 mt-0.5 text-sm font-normal sm:text-base">
+        <p class="text-base-content/75 mt-0.5 text-sm font-normal sm:text-base">
           {subtitle}
         </p>
       {/if}

@@ -4,19 +4,18 @@
 
   interface Props {
     children: Snippet;
-    tight?: boolean;
     class?: ClassValue;
+    layout?: string;
   }
-  const { children, tight = false, class: className }: Props = $props();
+  const { children, class: className, layout = undefined }: Props = $props();
 </script>
 
 <div
   class={[
-    'grid gap-4 lg:gap-6',
-    tight
-      ? 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
-      : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
+    'grid',
     className,
+    layout ??
+      'grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4',
   ]}
 >
   {@render children()}

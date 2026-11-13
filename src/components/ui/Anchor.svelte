@@ -15,6 +15,6 @@
   const anchor = $derived(parseAnchor(href));
 </script>
 
-<a href={anchor.href} class={className} aria-label={aria} {...anchor.attrs}>
-  {@render children()}
-</a>
+<a href={anchor.href} class={className} aria-label={aria} {...anchor.attrs}
+  >{@render children()}</a
+>
