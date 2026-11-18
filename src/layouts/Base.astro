@@ -1,11 +1,10 @@
 ---
-// import { CustomCSSVariables } from '#/data/css.ts';
 import { SEO } from 'astro-seo';
 import { Font, getImage } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 
 import profileImage from '#/assets/images/profile.jpg';
-import { THEMEMANAGER_CONFIG } from '#/data/theme.svelte';
+import { THEMEMANAGER_CONFIG } from '#/client/theme.svelte';
 import { siteConfig } from '#content';
 
 import BaseBreadcrumbs from './Base/Breadcrumbs.svelte';
@@ -19,7 +18,8 @@ import BaseSpinner from './Base/Spinner.svelte';
 
 import '../styles/main.css';
 
-import type { BaseProps, UrlPart } from '#/types/layouts';
+import type { Link } from '#/types/generic';
+import type { BaseProps } from '#/types/site';
 
 interface Props extends BaseProps {
   langGermanLegacy?: boolean;
@@ -42,7 +42,7 @@ const profileImageAvatar = await getImage({
   width: 160,
 });
 
-let urlParts: UrlPart[] = Astro.url.pathname
+let urlParts: Link[] = Astro.url.pathname
   .split('/')
   .filter(Boolean)
   .map((segment, i, arr) => ({
@@ -160,7 +160,7 @@ let urlParts: UrlPart[] = Astro.url.pathname
     <script>
       import 'rangefind/element';
 
-      import { siteInit } from '#/data/site';
+      import { siteInit } from '#/client/init';
 
       await siteInit();
     </script>

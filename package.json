@@ -37,7 +37,6 @@
     "photoswipe": "^5.4.4",
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^1.1.2",
-    "prettier-plugin-organize-imports": "^4.3.0",
     "prettier-plugin-svelte": "^4.1.1",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "rangefind": "^0.5.0",

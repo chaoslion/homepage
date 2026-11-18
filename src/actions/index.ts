@@ -1,8 +1,9 @@
 import { defineAction } from 'astro:actions';
 import { z } from 'astro/zod';
 
-import { ContactMailSchema } from '#/data/actions';
 import { siteConfig } from '#content';
+
+import { ContactMailSchema } from './schemas';
 
 export const server = {
   getContactMail: defineAction({

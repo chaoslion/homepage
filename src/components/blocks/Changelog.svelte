@@ -1,12 +1,10 @@
 <script lang="ts">
   import type { ClassValue } from 'svelte/elements';
 
-  import { Anchor } from '#/components/ui';
+  import { Anchor, Icon } from '#/components/ui';
   import { iconFlex } from '#/lib/css';
   import { siteConfig } from '#content';
   import type { BuildInfoMap } from '#plugins-vite';
-
-  import Icon from '../ui/Icon.svelte';
 
   interface Props {
     class?: ClassValue;
@@ -53,10 +51,10 @@
         </div>
       </div>
       <div class="collapse-content">
-        <ul class="flex flex-col list-none gap-2">
+        <ul class="flex list-none flex-col gap-2">
           <li>
             <span class={iconFlex()}>
-              <Icon name="mdi--clock-outline" class="size-6" />
+              <Icon name="mdi--clock-outline" size="lg" />
               {date}
             </span>
           </li>
@@ -66,7 +64,7 @@
                 href={repoUrl}
                 class={['link link-underline', iconFlex()]}
               >
-                <Icon name="mdi--code" class="size-6" />
+                <Icon name="mdi--code" size="lg" />
                 {item.hash_short}
               </Anchor>
             </li>

@@ -18,7 +18,7 @@
       {/if}
 
       <div class="timeline-middle text-primary">
-        <Icon name={item.icon} class="size-7 md:mx-2" />
+        <Icon name={item.icon} size="lg" class="md:mx-2" />
       </div>
 
       <div

@@ -258,12 +258,14 @@ export const pluginBlog = (blogPath: string, blogImagesDirectory?: string) =>
             };
           }
           case 'internalWiki': {
-            const [, lang, slug] = linkPrefixMatch as [
+            // Groups: 1 = "lang:" (with colon), 2 = bare lang, 3 = slug.
+            const [, , lang, slug] = linkPrefixMatch as [
               string,
+              string | undefined,
               string | undefined,
               string,
             ];
-            const normalizedLang = lang?.slice(0, -1) ?? 'en';
+            const normalizedLang = lang ?? 'en';
             return {
               type: 'mdxJsxTextElement',
               name: 'CustomLink',

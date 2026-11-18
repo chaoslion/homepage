@@ -12,12 +12,12 @@ import { siteConfig } from '#content';
   <HeadingFancy tag="h1" title="Changelog" />
 
   <WindowTerminal title="Versions">
-    {
-      Object.entries(siteConfig.build.repos).map(([repo, item]) => (
+    {Object.entries(siteConfig.build.repos).map(([repo, item]) => (
+      <>
         <WindowTerminalCommand command={`git describe ${repo}`} />
         <WindowTerminalStdout line={item.release} muted={false} />
-      ))
-    }
+      </>
+    ))}
   </WindowTerminal>
 
   <Changelog id="x-changelog-main" infos={siteConfig.build.repos} />

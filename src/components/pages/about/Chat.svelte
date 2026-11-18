@@ -2,7 +2,7 @@
   import type { Snippet } from 'svelte';
   import type { ClassValue } from 'svelte/elements';
 
-  import { slideInOnVisible } from '#/lib/actions';
+  import { slideInOnVisible } from '#/lib/svelte-actions';
 
   interface Props {
     avatar: Snippet;
@@ -22,8 +22,8 @@
     bubbleClass,
     children,
     name,
-    status = undefined,
-    id = undefined,
+    status,
+    id,
   }: Props = $props();
 </script>
 
@@ -40,12 +40,13 @@
     {@render avatar()}
   </div>
   <div class="chat-header text-sm">
-    {name}
+    {#if status !== undefined}
+      {name} &middot; {status}
+    {:else}
+      {name}
+    {/if}
   </div>
   <div class={['chat-bubble w-fit max-w-[85%]', bubbleClass]}>
     {@render children()}
   </div>
-  {#if status !== undefined}
-    <div class="chat-footer text-sm opacity-80">{status}</div>
-  {/if}
 </div>

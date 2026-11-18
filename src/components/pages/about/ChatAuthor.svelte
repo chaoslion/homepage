@@ -13,13 +13,13 @@
     children: Snippet;
   }
 
-  let { avatar: authorAvatar, context = undefined, children }: Props = $props();
+  let { avatar: authorAvatar, context, children }: Props = $props();
 </script>
 
 <Chat
   class="chat-start"
   avatarClass="avatar-online"
-  bubbleClass="chat-bubble-neutral max-w-3xl leading-relaxed"
+  bubbleClass="chat-bubble-neutral"
   name={siteConfig.authorName}
   status={context}
 >
@@ -31,8 +31,8 @@
   <div
     class={[
       'text-neutral-content',
-      'prose xl:prose-lg',
-      'prose-p:text-neutral-content',
+      'prose',
+      'prose-p:text-neutral-content prose-p:leading-relaxed prose-p:my-0',
       'prose-strong:text-neutral-content',
       'prose-a:text-neutral-content',
     ]}

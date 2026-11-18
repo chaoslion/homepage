@@ -2,10 +2,10 @@
   import type { Page } from 'astro';
 
   import { Anchor, Icon } from '#/components/ui';
-  import type { UrlPart } from '#/types/layouts';
+  import type { Link } from '#/types/generic';
 
   interface Props {
-    urlParts: UrlPart[];
+    urlParts: Link[];
     page?: Page;
   }
 
@@ -16,7 +16,7 @@
   <ul>
     <li>
       <Anchor href="/" aria="Home">
-        <Icon name="mdi--home-outline" class="size-5 opacity-25" />
+        <Icon name="mdi--home-outline" size="md" class="opacity-25" />
       </Anchor>
     </li>
     {#each urlParts as item, index}

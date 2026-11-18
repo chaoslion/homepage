@@ -70,10 +70,7 @@
         disabled={copied}
         onclick={copyToClipboard}
       >
-        <Icon
-          name={copied ? 'mdi--check' : 'mdi--content-copy'}
-          class="size-4"
-        />
+        <Icon name={copied ? 'mdi--check' : 'mdi--content-copy'} size="sm" />
         {copied ? 'Copied' : 'Copy'}
       </button>
       <div class="badge badge-ghost">{language}</div>

@@ -6,8 +6,7 @@
   import Spinner from './Spinner.svelte';
 
   type Result =
-    | { data: undefined; error: ActionError }
-    | { data: T; error: undefined };
+    { data: undefined; error: ActionError } | { data: T; error: undefined };
   interface Props {
     promise: Promise<Result>;
     actionFn: Snippet<[T]>;

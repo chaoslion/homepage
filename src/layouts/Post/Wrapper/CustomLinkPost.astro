@@ -1,12 +1,11 @@
 ---
 import { AnchorTextInternal } from '#/components/ui';
 import { getBlogPostsCollection } from '#/data/blog';
+import AnchorPostHash from '#/layouts/Post/AnchorPostHash.svelte';
 import type {
   BlogLinkInternalPostHash,
   BlogLinkPropsInternalPost,
 } from '#plugins-satteri';
-
-import AnchorPostHash from '../AnchorPostHash.svelte';
 
 const { slug, hashTarget, hashType, hashId, label } =
   Astro.props as BlogLinkPropsInternalPost;

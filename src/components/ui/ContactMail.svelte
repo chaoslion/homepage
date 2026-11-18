@@ -3,7 +3,7 @@
   import type { z } from 'astro/zod';
   import type { ClassValue } from 'svelte/elements';
 
-  import type { ContactMailSchema } from '#/data/actions';
+  import type { ContactMailSchema } from '#/actions/schemas';
   import { anchorInline } from '#/lib/css';
 
   import Action from './Action.svelte';

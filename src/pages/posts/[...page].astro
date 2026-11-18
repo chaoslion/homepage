@@ -2,7 +2,7 @@
 import type { Page, PaginateFunction } from 'astro';
 
 import PostsPreviewGrid from '#/components/blocks/PostsPreviewGrid.svelte';
-import { HeadingFancy } from '#/components/ui';
+import { Anchor, HeadingFancy, Icon } from '#/components/ui';
 import { getBlogPostsCollectionSorted } from '#/data/blog';
 import LayoutPaginate from '#/layouts/Paginate.astro';
 import type { PostsCollectionItem } from '#/types/collections';
@@ -24,6 +24,14 @@ interface Props {
   page: Page<PostsCollectionItem>;
 }
 const { page } = Astro.props as Props;
+
+// Explain the German legacy posts once, on the first page only.
+const languageSwitchPost =
+  page.currentPage === 1
+    ? (await getBlogPostsCollectionSorted()).find(
+        (post) => post.id === '2019-01-10-switching-to-english',
+      )
+    : undefined;
 ---
 
 <LayoutPaginate
@@ -32,6 +40,18 @@ const { page } = Astro.props as Props;
   title="Posts"
   breadcrumbs={['Posts']}
 >
-  <HeadingFancy title="Browse All Posts" />
+  <HeadingFancy title="Browse all posts" tag="h1" />
+  {languageSwitchPost && (
+    <div role="alert" class="alert alert-info alert-soft">
+      <Icon name="mdi--translate" size="md" />
+      <span>
+        Posts from before {siteConfig.posts.legacyCutoff.getFullYear()} are in
+        German.{' '}
+        <Anchor href={languageSwitchPost.href} class="link">
+          Here's why the blog switched to English.
+        </Anchor>
+      </span>
+    </div>
+  )}
   <PostsPreviewGrid client:load posts={page.data} />
 </LayoutPaginate>

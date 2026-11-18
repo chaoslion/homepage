@@ -1,14 +1,9 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-
   import { Anchor, Icon } from '#/components/ui';
   import { iconFlex } from '#/lib/css';
   import { siteConfig } from '#content';
 
-  let currentYear: number | undefined = undefined;
-  onMount(() => {
-    currentYear = new Date().getFullYear();
-  });
+  const currentYear = new Date().getFullYear();
 </script>
 
 <div class="flex flex-col items-center justify-between gap-4 lg:flex-row">
@@ -26,7 +21,7 @@
   </div>
 
   <div class={iconFlex()}>
-    <Icon name="mdi--copyright" class="size-5" />
-    {`${currentYear}. ${siteConfig.copyright}`}
+    <Icon name="mdi--copyright" size="md" />
+    {`${currentYear} ${siteConfig.author}`}
   </div>
 </div>

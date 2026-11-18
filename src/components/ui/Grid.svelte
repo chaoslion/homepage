@@ -7,7 +7,7 @@
     class?: ClassValue;
     layout?: string;
   }
-  const { children, class: className, layout = undefined }: Props = $props();
+  const { children, class: className, layout }: Props = $props();
 </script>
 
 <div

@@ -9,6 +9,7 @@ import {
   getCategoriesCollection,
 } from '#/data/blog';
 import LayoutPaginate from '#/layouts/Paginate.astro';
+import { singularOrPlural } from '#/lib/helper';
 import type {
   CategoriesCollectionItem,
   PostsCollectionItem,
@@ -34,6 +35,7 @@ export async function getStaticPaths({
         params: { name: categoryItem.id },
         props: {
           categoryItem: categoryItem,
+          categoryItemsLength: postsCollectionByCategory.length,
         },
         pageSize: siteConfig.posts.previewPagination,
       });
@@ -44,11 +46,12 @@ export async function getStaticPaths({
 interface Props {
   page: Page<PostsCollectionItem>;
   categoryItem: CategoriesCollectionItem;
+  categoryItemsLength: number;
 }
 interface Params {
   name: string;
 }
-const { page, categoryItem } = Astro.props as Props;
+const { page, categoryItem, categoryItemsLength } = Astro.props as Props;
 const { name: _name } = Astro.params as Params;
 ---
 
@@ -58,6 +61,13 @@ const { name: _name } = Astro.params as Params;
   href={categoryItem.href}
   paginatePage={page}
 >
-  <HeadingFancy title="Posts" preposition="in" subtitle={categoryItem.title} />
+  <HeadingFancy
+    title={categoryItem.title}
+    subtitle={{
+      title: 'Category',
+      label: `${categoryItemsLength} ${singularOrPlural(categoryItemsLength, 'post', 'posts')}`,
+    }}
+    tag="h1"
+  />
   <PostsPreviewGrid client:load posts={page.data} />
 </LayoutPaginate>

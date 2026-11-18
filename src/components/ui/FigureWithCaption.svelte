@@ -37,16 +37,13 @@
     >
       {#if caption}
         <span class={iconFlex()}>
-          <Icon
-            name={captionIcon ?? 'mdi--information-outline'}
-            class="size-4"
-          />
+          <Icon name={captionIcon ?? 'mdi--information-outline'} size="sm" />
           {caption}
         </span>
       {/if}
       {#if captionResource}
         <span class={iconFlex()}>
-          <Icon name={captionIcon ?? 'mdi--link-variant'} class="size-4" />
+          <Icon name={captionIcon ?? 'mdi--link-variant'} size="sm" />
           <cite>
             {@render captionResource()}
           </cite>

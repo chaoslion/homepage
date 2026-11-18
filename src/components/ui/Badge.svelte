@@ -20,7 +20,6 @@
     labelColor = 'badge-ghost',
     textColor = 'badge-secondary',
     labelIcon,
-    labelIconClass,
     class: className = 'badge-sm',
   }: Props = $props();
 </script>
@@ -34,7 +33,7 @@
     ]}
   >
     {#if labelIcon}
-      <Icon name={labelIcon} class={labelIconClass} />
+      <Icon name={labelIcon} size="sm" />
     {/if}
     {label}
   </span>

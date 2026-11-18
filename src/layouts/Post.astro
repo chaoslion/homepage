@@ -1,7 +1,7 @@
 ---
 import type { MarkdownHeading } from 'astro';
 
-import PostsPreviewCard from '#/components/blocks/PostsPreviewCard.svelte';
+import PostsPreviewCardHeader from '#/components/blocks/PostsPreviewCardHeader.svelte';
 import PostsPreviewGrid from '#/components/blocks/PostsPreviewGrid.svelte';
 import { HeadingFancy } from '#/components/ui';
 import {
@@ -10,8 +10,10 @@ import {
   getPostsRelatedCollection,
   getResourcesCollectionItem,
 } from '#/data/blog';
+import { singularOrPlural } from '#/lib/helper';
+import type { AdditionalPostSectionType, TreeLinkItem } from '#/types/blog';
 import type { PostsCollectionItem } from '#/types/collections';
-import type { HeadingFancyProps, TreeLinkItem } from '#/types/components';
+import type { HeadingFancyProps } from '#/types/components';
 import { siteConfig } from '#content';
 
 import Base from './Base.astro';
@@ -123,7 +125,7 @@ const relatedCollection = getPostsRelatedCollection(
   siteConfig.posts.maxRelated,
 );
 
-let appendixHeadings = new Map<string, HeadingFancyProps>();
+let appendixHeadings = new Map<AdditionalPostSectionType, HeadingFancyProps>();
 
 if (globalResourcesConsumed.length > 0) {
   appendixHeadings.set('resources', {
@@ -133,11 +135,17 @@ if (globalResourcesConsumed.length > 0) {
 }
 
 if (post.series) {
+  const postsCollectionBySeriesLength = filterPostsCollectionBySeries(
+    collection,
+    post.series,
+  ).length;
   appendixHeadings.set('series', {
     id: `post-series`,
-    title: 'Series',
-    preposition: 'on',
-    subtitle: post.series.title,
+    title: post.series.title,
+    subtitle: {
+      title: 'Series',
+      label: `${postsCollectionBySeriesLength} ${singularOrPlural(postsCollectionBySeriesLength, 'post', 'posts')}`,
+    },
   });
 }
 
@@ -154,7 +162,7 @@ if (tocIntroLabel !== undefined) {
   finalHeadingLinks.push({
     depth: 0,
     link: {
-      href: '#content',
+      href: '#entrypoint',
       label: tocIntroLabel,
     },
   });
@@ -173,18 +181,20 @@ finalHeadingLinks.push(...headingLinks);
   <Container supportsSearchIndex={true}>
     <ContainerConstrain prose={true} class="lg:gap-12">
       <HeadingFancy title={post.title} tag="h1" />
-      <PostsPreviewCard client:load {post} />
+      <PostsPreviewCardHeader client:load {post} />
 
       <PostIndexList
         postId={post.slugName}
         headingLinks={finalHeadingLinks}
-        headingLinksAdditional={[...appendixHeadings.values()].map((item) => ({
-          link: {
-            href: `#${item.id}`,
-            label: item.title,
-          },
-          depth: 0,
-        }))}
+        headingLinksAdditional={[...appendixHeadings.entries()].map(
+          ([key, item]) => ({
+            link: {
+              href: `#${item.id}`,
+              label: key === 'series' ? 'Series' : item.title,
+            },
+            depth: 0,
+          }),
+        )}
       />
     </ContainerConstrain>
   </Container>
@@ -194,7 +204,7 @@ finalHeadingLinks.push(...headingLinks);
       <div class="divider"></div>
     </div>
     <div
-      id="content"
+      id="entrypoint"
       class="prose prose-blockquote:not-italic prose-blockquote:border-l-accent mx-auto"
       data-pswp-gallery
     >

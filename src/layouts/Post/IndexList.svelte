@@ -6,7 +6,7 @@
   import WindowTerminalStdout from '#/components/blocks/WindowTerminalStdout.svelte';
   import { Anchor } from '#/components/ui';
   import { anchorTerminal } from '#/lib/css';
-  import type { TreeLinkItem } from '#/types/components';
+  import type { TreeLinkItem } from '#/types/blog';
 
   interface Props {
     postId: string;

@@ -28,25 +28,25 @@
     <div class="text-center lg:text-left">
       <HeadingFlip
         tag="h1"
-        title="Building Things That"
+        title="Building things that"
         variants={siteConfig.heroTitleBuildingVariants}
       />
-      <Heading tag="h2">Fixing Things That Don't.</Heading>
+      <Heading tag="h2">Fixing things that don't.</Heading>
       <p class="py-6 text-xl">
-        Welcome! I'm Alex. I spend my days writing production-grade code,
-        architecting systems, and navigating the messy reality of software
-        engineering. Check out <AnchorText
+        Welcome! I'm {siteConfig.authorName}, a computer engineer from Germany.
+        I build resilient embedded systems, from firmware to the cloud, designed
+        to run for years. Check out <AnchorText
           href="/now"
           text="what I'm doing now"
         />
         or the
         <AnchorText href="/uses" text="tools and tech I use" />. This blog is
         where I share practical insights, hard-learned lessons, and honest takes
-        on computer science and software development.
+        on embedded, systems, and software engineering.
       </p>
       <div class="flex flex-wrap items-center gap-3 max-lg:justify-center">
         <Anchor href="/about" class="btn btn-primary btn-lg"
-          >More About Me</Anchor
+          >More about me</Anchor
         >
       </div>
     </div>

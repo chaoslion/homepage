@@ -1,14 +1,14 @@
-import { z } from "astro/zod";
+import { z } from 'astro/zod';
 
-import { type BlogCodeBlockProps } from "./types";
+import { type BlogCodeBlockProps } from './types';
 
 export function checkCodeLang(
   node: any,
   ctx: any,
-  fallback: string = "plaintext",
+  fallback: string = 'plaintext',
 ): string {
   const lang = node.lang || fallback;
-  ctx.setProperty(node, "lang", lang);
+  ctx.setProperty(node, 'lang', lang);
   return lang;
 }
 
@@ -27,7 +27,7 @@ export const CodeBlockMetaStringSchema = z
   .transform((value, ctx) => {
     if (!KeyValueOnlyLineRegEx.test(value)) {
       ctx.addIssue({
-        code: "custom",
+        code: 'custom',
         message: `Meta string must only contain key="value" pairs: "${value}"`,
       });
       return z.NEVER;
@@ -39,9 +39,7 @@ export const CodeBlockMetaStringSchema = z
     return pairs;
   })
   .pipe(CodeBlockMetaSchema)
-  .transform(
-    (value): BlogCodeBlockProps => ({
-      id: value.id,
-      label: value.label,
-    }),
-  );
+  .transform((value): BlogCodeBlockProps => ({
+    id: value.id,
+    label: value.label,
+  }));

@@ -9,6 +9,7 @@ import {
   getSeriesCollection,
 } from '#/data/blog';
 import LayoutPaginate from '#/layouts/Paginate.astro';
+import { singularOrPlural } from '#/lib/helper';
 import type {
   PostsCollectionItem,
   SeriesCollectionItem,
@@ -30,7 +31,10 @@ export async function getStaticPaths({
     ).toReversed();
     return paginate(postsCollectionBySeries, {
       params: { name: item.id },
-      props: { seriesItem: item },
+      props: {
+        seriesItem: item,
+        seriesItemsLength: postsCollectionBySeries.length,
+      },
       pageSize: siteConfig.posts.previewPagination,
     });
   });
@@ -39,11 +43,12 @@ export async function getStaticPaths({
 interface Props {
   page: Page<PostsCollectionItem>;
   seriesItem: SeriesCollectionItem;
+  seriesItemsLength: number;
 }
 interface Params {
   name: string;
 }
-const { page, seriesItem } = Astro.props as Props;
+const { page, seriesItem, seriesItemsLength } = Astro.props as Props;
 const { name: _name } = Astro.params as Params;
 ---
 
@@ -53,6 +58,13 @@ const { name: _name } = Astro.params as Params;
   href={seriesItem.href}
   paginatePage={page}
 >
-  <HeadingFancy title="Posts" preposition="on" subtitle={seriesItem.title} />
+  <HeadingFancy
+    title={seriesItem.title}
+    subtitle={{
+      title: 'Series',
+      label: `${seriesItemsLength} ${singularOrPlural(seriesItemsLength, 'post', 'posts')}`,
+    }}
+    tag="h1"
+  />
   <PostsPreviewGrid client:load posts={page.data} />
 </LayoutPaginate>

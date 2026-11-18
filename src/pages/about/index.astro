@@ -13,10 +13,10 @@ import Stats from '#/components/pages/about/Stats.svelte';
 import {
   Anchor,
   ContactMail,
+  Grid,
   HeadingFancy,
   Heading as HeadingPrimitive,
 } from '#/components/ui';
-import Grid from '#/components/ui/Grid.svelte';
 import { getAboutCollection } from '#/data/about';
 import { getBlogPostsCollectionSorted, getTagsCollection } from '#/data/blog';
 import LayoutDefault from '#/layouts/Default.astro';
@@ -40,6 +40,7 @@ const optGalleryMain = await getImage({
 });
 
 const postsCollection = await getBlogPostsCollectionSorted();
+const firstPostDate = postsCollection.at(-1)?.date;
 const tagsCollection = await getTagsCollection();
 
 const entries = await getAboutCollection();
@@ -50,51 +51,59 @@ const aboutCollectionRendered = await Promise.all(
   }),
 );
 
-const MAX_VISIBLE_CHATS = 3;
-const chatsVisible = aboutCollectionRendered.slice(0, MAX_VISIBLE_CHATS);
-const chatsHidden = aboutCollectionRendered.slice(MAX_VISIBLE_CHATS);
-const lastSlug = aboutCollectionRendered.at(-1)?.i.slug;
+let stats = [
+  ...siteConfig.stats,
+  {
+    label: 'tags',
+    value: `${tagsCollection.length}`,
+    description: 'topics covered',
+  },
+  firstPostDate !== undefined
+    ? {
+        label: 'writing since',
+        value: `${firstPostDate.getFullYear()}`,
+        description: 'first post',
+      }
+    : null,
+];
 ---
 
 <LayoutDefault title="About" supportsSearchIndex={true} supportsIndex={true}>
   <div class="aura aura-gold aura-lg">
-    <WindowTerminal>
-      <div slot="title" class="flex justify-center">
-        <HeadingPrimitive tag="h1" class="bg-base-100 rounded-box p-2">
-          alexander.{' '}
-          <span class="from-primary to-secondary bg-linear-to-r bg-clip-text text-transparent">
-            computer engineer.
-          </span>
-        </HeadingPrimitive>
-      </div>
+    <WindowTerminal
+      title={`${siteConfig.authorName}@${siteConfig.authorSurname}: ~`.toLowerCase()}
+    >
       <WindowTerminalCommand command="whoami" />
-      <p class="text-lg leading-relaxed">
-        Hi, I’m Alexander, writing from Germany. I’ve been into computers for as
-        long as I can remember. I started with software, then got pulled toward
-        the hardware underneath it, which is how I became a computer engineer.
-        Along the way I realized that code only runs when physical power is
-        driving it, so I gave that reality a motto of my own:{' '}
-        <span class="font-bold tracking-wide">Kein Strom, kein Code</span>.
+      <HeadingPrimitive tag="h1" class="font-mono">
+        <span class="text-neutral-content">alexander.</span>
+        <br />
+        <span class="from-primary to-accent bg-linear-to-r bg-clip-text text-transparent">
+          computer engineer.
+        </span>
+      </HeadingPrimitive>
+      <WindowTerminalCommand command="cat about.md" />
+      <p class="leading-relaxed max-w-[80ch] text-base md:text-lg">
+        Hi, I'm Alexander, writing from Germany. I started with software, then
+        kept following the bugs downward until I ended up at the hardware
+        underneath. These days I build embedded systems on both sides of that
+        line. Down there you learn the first rule fast:&nbsp;
+        <span class="font-bold tracking-wide">Kein Strom, kein Code</span>
+        (no power, no code).
       </p>
     </WindowTerminal>
   </div>
 
   <HeadingFancy title="Q&A" />
 
-  <div class="mx-auto max-w-5xl">
+  <div class="mx-auto max-w-3xl">
     <ChatAuthor avatar={avatarAuthorResized} client:load>
       Hey! I've answered some questions you might have. Let's go.
     </ChatAuthor>
 
-    {chatsVisible.map(({ i, Content }) => {
+    {aboutCollectionRendered.map(({ i, Content }) => {
       return (
         <Fragment>
-          <ChatYou
-            client:load
-            question={i.prompt}
-            slug={`qa-${i.slug}`}
-            delivered={i.slug === lastSlug}
-          />
+          <ChatYou client:load question={i.prompt} slug={`qa-${i.slug}`} />
           <ChatAuthor
             client:load
             avatar={avatarAuthorResized}
@@ -105,48 +114,16 @@ const lastSlug = aboutCollectionRendered.at(-1)?.i.slug;
         </Fragment>
       );
     })}
-    {chatsHidden.length > 0 && (
-      <details class="collapse group">
-        <summary class="btn btn-sm bg-base-200 hover:bg-base-300 border-0 rounded-full w-fit mx-auto my-2 flex items-center group-open:hidden">
-          Show full Q&amp;A ({chatsHidden.length} more)
-        </summary>
-        <div class="collapse-content px-0">
-          {chatsHidden.map(({ i, Content }) => {
-            return (
-              <Fragment>
-                <ChatYou
-                  client:load
-                  question={i.prompt}
-                  slug={`qa-${i.slug}`}
-                  delivered={i.slug === lastSlug}
-                />
-                <ChatAuthor
-                  client:load
-                  avatar={avatarAuthorResized}
-                  context={i.context}
-                >
-                  <Content />
-                </ChatAuthor>
-              </Fragment>
-            );
-          })}
-        </div>
-      </details>
-    )}
   </div>
 
-  <HeadingFancy title="By the Numbers" />
+  <HeadingFancy title="By the numbers" />
 
-  <Stats
-    client:visible
-    firstPostDate={postsCollection.at(-1)?.date ?? new Date()}
-    tagCount={tagsCollection.length}
-  />
+  <Stats stats={stats.filter((x) => x != null)} />
 
   <HeadingFancy title="Community" />
 
   <Grid layout="grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-    <CommunityCard title="TU Berlin Alum">
+    <CommunityCard title="TU Berlin alum">
       {/* prettier-ignore */}
       <p>
         I'm an alum of{' '}
@@ -164,37 +141,18 @@ const lastSlug = aboutCollectionRendered.at(-1)?.i.slug;
           client:visible
           type="alum"
           anchorClass="btn btn-primary"
-          text="Ask me about TU Berlin!"
+          text="Ask me about TU Berlin"
         />
       </div>
     </CommunityCard>
     <CommunityCard title="Codewars">
-      <Anchor href={siteConfig.codewarsReferalUrl}>
-        {['light', 'dark'].map((theme) => (
-          <img
-            src={
-              theme === 'light'
-                ? `${siteConfig.codewarsBadge}?theme=light`
-                : siteConfig.codewarsBadge
-            }
-            alt="Codewars Badge"
-            loading="lazy"
-            class:list={[
-              'w-full',
-              theme === 'light' ? 'dark:hidden' : 'hidden dark:block',
-            ]}
-          />
-        ))}
-      </Anchor>
-
       <p>
-        Codewars is a coding practice platform where you solve programming
-        challenges in dozens of languages, earn rank as you improve, and get
-        feedback from a big community of developers.
+        My puzzle habit, currently at 2 kyu. A kata or two keeps the brain warm
+        between real problems, and other people’s solutions keep me humble.
       </p>
       <div class="card-actions justify-end">
         <Anchor href={siteConfig.codewarsReferalUrl} class="btn btn-primary">
-          Join me on Codewars!
+          Join me on Codewars
         </Anchor>
       </div>
     </CommunityCard>
@@ -202,12 +160,11 @@ const lastSlug = aboutCollectionRendered.at(-1)?.i.slug;
     <CommunityCard title="Home Assistant">
       {/* prettier-ignore */}
       <p>
+        I'm an active member of the{' '}
         <Anchor href="https://www.home-assistant.io/" class={anchorInline()}
           >Home Assistant</Anchor
         >{' '}
-        is an open-source home automation platform that puts you in control of
-        your smart devices, free from the cloud. I'm an active member of its
-        community, where I tinker with automations and swap ideas with other
+        community, tinkering with automations and swapping ideas with other
         smart-home enthusiasts.
       </p>
       <div class="card-actions justify-end">
@@ -215,25 +172,24 @@ const lastSlug = aboutCollectionRendered.at(-1)?.i.slug;
           href="https://discord.gg/home-assistant"
           class="btn btn-primary"
         >
-          Join the Community
+          Join the community
         </Anchor>
       </div>
     </CommunityCard>
     <CommunityCard title="The Programmer's Hangout">
       <p>
-        The Programmer's Hangout is a large Discord server for developers of all
-        levels to chat, help each other debug, and talk shop across languages
-        and stacks. As a developer myself, you'll often find me there.
+        My virtual break room. I drop by to help with low-level questions and
+        stay for the off-topic chat.
       </p>
       <div class="card-actions justify-end">
         <Anchor href="https://discord.gg/programming" class="btn btn-primary">
-          Join the Community
+          Join the community
         </Anchor>
       </div>
     </CommunityCard>
   </Grid>
 
-  <HeadingFancy title="Keep Exploring" />
+  <HeadingFancy title="Keep exploring" />
 
   <Bento
     client:load
@@ -241,8 +197,8 @@ const lastSlug = aboutCollectionRendered.at(-1)?.i.slug;
     collection={postsCollection}
     maxPosts={6}
   >
-    Got a question, a project, or an idea you'd like to bounce around? Write me
-    at <ContactMail client:visible />. Or click around: the tiles jump to random
-    posts.
+    Stuck on a weird bug or building something fun? Say hi at{' '}
+    <ContactMail client:visible />. Or pick a random post and get lost for a
+    while.
   </Bento>
 </LayoutDefault>

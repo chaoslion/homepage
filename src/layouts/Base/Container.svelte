@@ -8,7 +8,11 @@
     supportsSearchIndex?: boolean;
   }
 
-  let { class: className, children, supportsSearchIndex = false }: Props = $props();
+  let {
+    class: className,
+    children,
+    supportsSearchIndex = false,
+  }: Props = $props();
 </script>
 
 <div

@@ -4,18 +4,16 @@
   interface Props {
     question: string;
     slug: string;
-    delivered?: boolean;
   }
 
-  let { question, slug, delivered = false }: Props = $props();
+  let { question, slug }: Props = $props();
 </script>
 
 <Chat
   class="chat-end"
   avatarClass="avatar-placeholder"
-  bubbleClass="chat-bubble-primary max-w-3xl leading-relaxed xl:text-lg"
+  bubbleClass="chat-bubble-primary"
   name="You"
-  status={delivered ? 'Delivered' : undefined}
   id={slug}
 >
   {#snippet avatar()}
@@ -23,5 +21,7 @@
       <span class="text-3xl">Y</span>
     </div>
   {/snippet}
-  {question}
+  <p class="leading-relaxed">
+    {question}
+  </p>
 </Chat>

@@ -45,7 +45,7 @@
       <SocialList listClass="menu menu-horizontal rounded-box">
         {#snippet itemFn(item: SocialLink)}
           <Anchor href={item.href} aria={item.label}>
-            <Icon name={item.icon} class="size-6" />
+            <Icon name={item.icon} size="lg" />
           </Anchor>
         {/snippet}
       </SocialList>

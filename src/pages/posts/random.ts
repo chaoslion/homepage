@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 
-import { shuffleCollection } from '#/data/blog-tools';
+import { shuffleCollection } from '#/lib/helper';
 
 export const prerender = false;
 

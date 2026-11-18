@@ -9,6 +9,7 @@ import {
   getTagsCollection,
 } from '#/data/blog';
 import LayoutPaginate from '#/layouts/Paginate.astro';
+import { singularOrPlural } from '#/lib/helper';
 import type {
   PostsCollectionItem,
   TagsCollectionItem,
@@ -32,6 +33,7 @@ export async function getStaticPaths({
       params: { name: tagItem.id },
       props: {
         tagItem: tagItem,
+        tagItemLength: postsCollectionByTags.length,
       },
       pageSize: siteConfig.posts.previewPagination,
     });
@@ -41,11 +43,12 @@ export async function getStaticPaths({
 interface Props {
   page: Page<PostsCollectionItem>;
   tagItem: TagsCollectionItem;
+  tagItemLength: number;
 }
 interface Params {
   name: string;
 }
-const { page, tagItem } = Astro.props as Props;
+const { page, tagItem, tagItemLength } = Astro.props as Props;
 const { name: _name } = Astro.params as Params;
 ---
 
@@ -56,9 +59,12 @@ const { name: _name } = Astro.params as Params;
   paginatePage={page}
 >
   <HeadingFancy
-    title="Posts"
-    preposition="with"
-    subtitle={`#${tagItem.title}`}
+    title={tagItem.title}
+    subtitle={{
+      title: 'Tag',
+      label: `${tagItemLength} ${singularOrPlural(tagItemLength, 'post', 'posts')}`,
+    }}
+    tag="h1"
   />
   <PostsPreviewGrid client:load posts={page.data} />
 </LayoutPaginate>

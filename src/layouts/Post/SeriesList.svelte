@@ -24,7 +24,7 @@
       </div>
       <div>
         {#if !activeSeriesItem}
-          <Anchor href={item.href}>
+          <Anchor href={item.href} class="max-sm:hidden">
             <img
               class="rounded-box size-32 object-cover"
               alt={item.title}
@@ -33,25 +33,33 @@
           </Anchor>
         {:else}
           <img
-            class="rounded-box size-32 object-cover"
+            class="rounded-box size-32 object-cover max-sm:hidden"
             alt={item.title}
             src={item.cover.src}
           />
         {/if}
       </div>
       <div class="list-col-grow">
-        <div class="text-lg">{item.title}</div>
+        <div class="text-lg">
+          {#if !activeSeriesItem}
+            <Anchor href={item.href} class="link link-primary">
+              {item.title}
+            </Anchor>
+          {:else}
+            {item.title}
+          {/if}
+        </div>
         <div class="font-semibold opacity-75">
           {item.summary}
         </div>
       </div>
       {#if !activeSeriesItem}
         <Anchor
-          class="btn btn-square btn-ghost"
+          class="btn btn-square btn-ghost max-sm:hidden"
           href={item.href}
           aria={item.title}
         >
-          <Icon name="mdi--play" class="size-[1.2em]" />
+          <Icon name="mdi--play" size="md" />
         </Anchor>
       {/if}
     </li>

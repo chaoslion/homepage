@@ -15,12 +15,10 @@ const excludePatternMatch = excludePatterns.map((pattern) =>
 );
 ---
 
-{
-  excludePatternMatch.some((match) => match !== null) ? (
+{excludePatternMatch.some((match) => match !== null) ? (
+  <slot />
+) : (
+  <code>
     <slot />
-  ) : (
-    <code>
-      <slot />
-    </code>
-  )
-}
+  </code>
+)}

@@ -2,10 +2,11 @@
 import { getImage } from 'astro:assets';
 
 import profilePicture from '#/assets/images/profile.jpg';
-import PostsPreviewGrid from '#/components/blocks/PostsPreviewGrid.svelte';
+import PostsPreviewCardSticky from '#/components/blocks/PostsPreviewCardSticky.svelte';
+import PostsPreviewGridLatest from '#/components/blocks/PostsPreviewGridLatest.svelte';
 import Hero from '#/components/pages/home/Hero.svelte';
 import TechStack from '#/components/pages/home/TechStack.svelte';
-import { Anchor, HeadingFancy, Icon } from '#/components/ui';
+import { Anchor, Grid, HeadingFancy, Icon } from '#/components/ui';
 import { getBlogPostsCollectionSorted } from '#/data/blog';
 import LayoutDefault from '#/layouts/Default.astro';
 import { iconFlex } from '#/lib/css';
@@ -14,10 +15,10 @@ import { siteConfig } from '#content';
 
 const postsCollection: PostsCollectionItem[] =
   await getBlogPostsCollectionSorted();
-const postCollectionSticky = postsCollection.filter((post) => post.sticky);
-const postCollectionLimited = postsCollection
-  .filter((post) => !post.sticky)
-  .slice(0, siteConfig.posts.indexMax);
+const postsSticky = postsCollection
+  .filter((post) => post.sticky)
+  .slice(0, siteConfig.posts.stickyMax);
+const postsLatest = postsCollection.filter((post) => !post.sticky);
 
 const profilePictureOpt = await getImage({
   src: profilePicture,
@@ -31,18 +32,26 @@ const profilePictureOpt = await getImage({
 <LayoutDefault supportsIndex={true}>
   <Hero client:load slot="hero" profilePicture={profilePictureOpt} />
 
-  <HeadingFancy title="Current Tech Stack" />
+  <HeadingFancy title="Current tech stack" />
   <TechStack stack={siteConfig.techStack} />
 
-  <HeadingFancy title="Featured Posts" />
-  <PostsPreviewGrid client:visible posts={postCollectionSticky} />
+  <HeadingFancy title="Featured posts" />
+  <Grid>
+    {postsSticky.map((post) => (
+      <PostsPreviewCardSticky client:visible {post} />
+    ))}
+  </Grid>
 
-  <HeadingFancy title="Latest Posts" />
+  <HeadingFancy title="Latest posts" />
   <section>
-    <PostsPreviewGrid client:visible posts={postCollectionLimited} />
+    <PostsPreviewGridLatest
+      client:visible
+      posts={postsLatest}
+      limit={siteConfig.posts.indexMax}
+    />
     <div class="mt-8 flex items-center justify-center gap-2">
       <Anchor href="/posts" class="btn btn-primary">
-        Browse All
+        Browse all
       </Anchor>
       <Anchor
         href="/posts/random"

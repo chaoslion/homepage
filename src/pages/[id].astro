@@ -39,9 +39,13 @@ const updateLabel = page.data.date.toLocaleDateString('en-US', {
   supportsIndex={true}
 >
   <HeadingFancy
-    tag="h1"
     title={page.data.title}
-    subtitle={page.data.subtitle}
+    subtitle={
+      page.data.subtitle !== undefined
+        ? { title: page.data.subtitle }
+        : undefined
+    }
+    tag="h1"
   />
   <div role="alert" class="alert alert-info alert-soft w-fit">
     <span>Updated on {updateLabel}</span>

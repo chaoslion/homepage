@@ -14,9 +14,9 @@
 {#snippet buttonFn(title: string, icon: string, invert: boolean = false)}
   {#if invert}
     <span class="truncate">{title}</span>
-    <Icon name={icon} class="size-4 shrink-0" />
+    <Icon name={icon} size="sm" class="shrink-0" />
   {:else}
-    <Icon name={icon} class="size-4 shrink-0" />
+    <Icon name={icon} size="sm" class="shrink-0" />
     <span class="truncate">{title}</span>
   {/if}
 {/snippet}

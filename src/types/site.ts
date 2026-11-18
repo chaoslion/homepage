@@ -1,9 +1,14 @@
-import type { ThemeState } from '#/data/theme.svelte';
+import type { Link } from '#/types/generic';
 import type { BuildInfoMap } from '#plugins-vite';
 
-export interface Link {
-  href: string;
-  label: string;
+export type ThemeState = 'light' | 'dark';
+
+export interface BaseProps {
+  breadcrumbs?: string[];
+  description?: string;
+  supportsIndex?: boolean;
+  supportsSearchIndex?: boolean;
+  title?: string;
 }
 
 export interface SocialLink extends Link {
@@ -18,9 +23,9 @@ export interface NavLink {
   title?: string;
 }
 
-interface Stat {
+export interface Stat {
   label: string;
-  value: () => string;
+  value: string;
   description: string;
 }
 
@@ -30,21 +35,6 @@ export interface TechCategoryItem {
   techs: string[];
 }
 
-// interface BuildChangeLogItem {
-//   date: Date;
-//   commit: string;
-// }
-// export interface Build {
-//   hash: string;
-//   tag: string;
-//   changelog: BuildChangeLogItem[];
-// }
-
-// interface BuildInfoRepo {
-//   hash: string;
-//   tag: string;
-// }
-
 interface Build {
   date: string;
   repoUrl: (repo: string, tag: string) => string | undefined;
@@ -53,6 +43,7 @@ interface Build {
 
 interface PostsConfig {
   codeBlockLanguageOverride: Record<string, string>;
+  stickyMax: number;
   indexMax: number;
   introLabel: (legacy: boolean) => string | undefined;
   legacyCutoff: Date;
@@ -77,7 +68,6 @@ export interface SiteConfig {
   authorDescription: string;
   siteDescription: string;
   build: Build;
-  codewarsBadge: string;
   codewarsReferalUrl: string;
   copyright: string;
   description: string;
@@ -90,7 +80,7 @@ export interface SiteConfig {
   navLinks: NavLink[];
   posts: PostsConfig;
   socialLinks: SocialLink[];
-  stats: (firstPostDate: Date, tagsCount: number) => Stat[];
+  stats: Stat[];
   techStack: Record<string, TechCategoryItem>;
   terminalSpeed: number;
   terminalStrings: string[];

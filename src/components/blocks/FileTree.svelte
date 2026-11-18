@@ -1,9 +1,8 @@
 <script lang="ts">
   import type { ClassValue } from 'svelte/elements';
 
+  import { Icon } from '#/components/ui';
   import type { FileTreeContent } from '#/types/components';
-
-  import Icon from '../ui/Icon.svelte';
 
   interface Props extends FileTreeContent {
     class?: ClassValue;
@@ -68,7 +67,7 @@
     {#if tree.isFolder && tree.children.length > 0}
       <details open={isFolderOpen}>
         <summary>
-          <Icon name="mdi--folder-outline" class="size-4" />
+          <Icon name="mdi--folder-outline" size="sm" />
           {tree.name}
         </summary>
         <ul>
@@ -79,7 +78,7 @@
       <div>
         <Icon
           name={tree.isFolder ? 'mdi--folder-outline' : 'mdi--file-outline'}
-          class="size-4"
+          size="sm"
         />
         {tree.name}
       </div>

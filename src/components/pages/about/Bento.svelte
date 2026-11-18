@@ -2,8 +2,8 @@
   import type { GetImageResult } from 'astro';
   import { onMount, type Snippet } from 'svelte';
 
-  import { Anchor, Grid, Image } from '#/components/ui';
-  import { shuffleCollection } from '#/data/blog-tools';
+  import { Anchor, Grid, Icon, Image } from '#/components/ui';
+  import { shuffleCollection } from '#/lib/helper';
   import type { PostsCollectionItem } from '#/types/collections';
   import { siteConfig } from '#content';
 
@@ -16,9 +16,12 @@
   const { collection, maxPosts, feature, children }: Props = $props();
   let randomCollection: PostsCollectionItem[] = $state([]);
 
+  function shuffleCollectionSlice() {
+    randomCollection = shuffleCollection([...collection]).slice(0, maxPosts);
+  }
+
   onMount(() => {
-    shuffleCollection(collection);
-    randomCollection = collection.slice(0, maxPosts);
+    shuffleCollectionSlice();
   });
 </script>
 
@@ -29,10 +32,18 @@
       label="Myself"
       class="rounded-box ring-base-content/10 aspect-4/3 w-full object-cover ring-1 lg:aspect-auto lg:min-h-0 lg:grow lg:basis-0"
     />
-    <figcaption class="flex items-center justify-center text-center">
+    <figcaption class="flex items-center justify-center gap-2 text-center">
       <p class="p-2 text-xs font-semibold sm:text-base md:text-lg">
         {@render children()}
       </p>
+      <button
+        type="button"
+        class="btn btn-ghost btn-circle btn-sm"
+        aria-label="Shuffle posts"
+        onclick={shuffleCollectionSlice}
+      >
+        <Icon name="mdi--reload" size="md" />
+      </button>
     </figcaption>
   </figure>
 

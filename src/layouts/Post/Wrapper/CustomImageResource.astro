@@ -1,9 +1,8 @@
 ---
 import { FigureWithCaption } from '#/components/ui';
 import { getResourcesCollectionItem } from '#/data/blog';
+import AnchorResource from '#/layouts/Post/AnchorResource.svelte';
 import type { BlogFigureResourceProps } from '#plugins-satteri';
-
-import AnchorResource from '../AnchorResource.svelte';
 
 const { label, id, resourceId } = Astro.props as BlogFigureResourceProps;
 const resource = await getResourcesCollectionItem(resourceId);

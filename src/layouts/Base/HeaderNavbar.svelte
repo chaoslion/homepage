@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { themeManager } from '#/client/theme.svelte';
   import Searchbar from '#/components/blocks/Searchbar.svelte';
   import WindowTerminal from '#/components/blocks/WindowTerminal.svelte';
   import WindowTerminalCommand from '#/components/blocks/WindowTerminalCommand.svelte';
@@ -10,9 +11,8 @@
     NavMenuItem,
     SocialList,
   } from '#/components/ui';
-  import { themeManager, type ThemeState } from '#/data/theme.svelte';
   import { anchorTerminal, iconFlex } from '#/lib/css';
-  import type { NavLink, SocialLink } from '#/types/site';
+  import type { NavLink, SocialLink, ThemeState } from '#/types/site';
   import { siteConfig } from '#content';
 
   interface Props {
@@ -58,8 +58,8 @@
 )}
   <button class={iconFlex()} onclick={click}>
     <span class={['swap', 'swap-rotate', active() ? undefined : 'swap-active']}>
-      <Icon name={iconOn} class="swap-on size-5" />
-      <Icon name={iconOff} class="swap-off size-5" />
+      <Icon name={iconOn} size="md" class="swap-on" />
+      <Icon name={iconOff} size="md" class="swap-off" />
     </span>
     {active() ? titleOn : titleOff}
   </button>

@@ -13,7 +13,7 @@
   let { command, class: className, textClass, muted = true }: Props = $props();
 </script>
 
-<div class={['inline-flex gap-2', { 'opacity-50': muted }, className]}>
+<div class={['inline-flex gap-2', { 'opacity-75': muted }, className]}>
   <span class="text-success select-none">$</span>
   {#if Array.isArray(command)}
     <span class={textClass} {@attach typedTerminalLine(command)}></span>

@@ -1,4 +1,4 @@
-export type ThemeState = 'light' | 'dark';
+import type { ThemeState } from '#/types/site';
 
 interface ThemeManagerConfig {
   browserMediaQuery: string;

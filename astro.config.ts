@@ -57,7 +57,6 @@ export default defineConfig({
     },
   ],
   image: {
-    domains: ['img.youtube.com'],
     layout: 'none',
     responsiveStyles: false,
   },

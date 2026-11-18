@@ -65,15 +65,32 @@ const postsCollectionBySeries: SeriesCollectionPosts[] = seriesCollection.map(
 ---
 
 <LayoutDefault title="Explore">
-  <HeadingFancy title="Browse By Category" />
+  <HeadingFancy title="Explore" tag="h1" />
+  <p class="mt-2 mb-8 max-w-prose text-base-content/80">
+    Navigate the archive by{' '}
+    <a href="#explore-categories" class="link link-primary">
+      categories
+    </a>
+    ,{' '}
+    <a href="#explore-tags" class="link link-primary">
+      tags
+    </a>
+    , or multi-part{' '}
+    <a href="#explore-series" class="link link-primary">
+      series
+    </a>
+    . Hit <kbd class="kbd kbd-sm mx-0.5">/</kbd> anywhere to grep across all
+    posts.
+  </p>
+  <HeadingFancy title="Browse by category" id="explore-categories" />
   <TaxonomyCategoriesTable
     posts={postsCollectionByCategory}
     totalPosts={postsCollection.length}
   />
 
-  <HeadingFancy title="Browse By Tag" />
+  <HeadingFancy title="Browse by tag" id="explore-tags" />
   <TaxonomyTagsCloud tags={postsCollectionByTag} />
 
-  <HeadingFancy title="Browse By Series" />
+  <HeadingFancy title="Browse by series" id="explore-series" />
   <TaxonomySeriesTable posts={postsCollectionBySeries} />
 </LayoutDefault>

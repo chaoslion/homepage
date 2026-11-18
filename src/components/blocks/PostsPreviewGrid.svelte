@@ -2,18 +2,16 @@
   import { Grid } from '#/components/ui';
   import type { PostsCollectionItem } from '#/types/collections';
 
-  import PostsPreviewCard from './PostsPreviewCard.svelte';
+  import PostsPreviewCardSingle from './PostsPreviewCardSingle.svelte';
 
   interface Props {
     posts: PostsCollectionItem[];
-    reversed?: boolean;
   }
-  let { posts, reversed = false }: Props = $props();
-  const postsOrdered = $derived(reversed ? posts.toReversed() : posts);
+  let { posts }: Props = $props();
 </script>
 
 <Grid>
-  {#each postsOrdered as post}
-    <PostsPreviewCard {post} embed={true} />
+  {#each posts as post (post.slug)}
+    <PostsPreviewCardSingle {post} />
   {/each}
 </Grid>
