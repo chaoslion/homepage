@@ -6,6 +6,10 @@ export function singularOrPlural(
   return count !== 1 ? plural : singular;
 }
 
+export function dateString(date: Date): string {
+  return date.toLocaleDateString('en-US', { dateStyle: 'long' });
+}
+
 export function shuffleCollection<T>(collection: T[]): T[] {
   // shuffle via fisher-yates
   for (let i = collection.length - 1; i > 0; i--) {
@@ -15,10 +19,6 @@ export function shuffleCollection<T>(collection: T[]): T[] {
   return collection;
 }
 
-/**
- * Start index (0-based) of a window of `size` items out of `total`, keeping
- * `current` centred where possible and clamped at both ends.
- */
 export function windowStart(
   current: number,
   total: number,

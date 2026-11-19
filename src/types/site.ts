@@ -44,18 +44,18 @@ interface Build {
 interface PostsConfig {
   codeBlockLanguageOverride: Record<string, string>;
   stickyMax: number;
-  indexMax: number;
+  latestMax: number;
   introLabel: (legacy: boolean) => string | undefined;
   legacyCutoff: Date;
   maxRelated: number;
   maxSummary: number;
   maxTOCDepth: number;
   maxTags: number;
+  paginateMaxPages: number;
   previewCoverClass: string;
   previewCoverWidth: number;
   previewMaxTags: number;
   previewPagination: number;
-  previewPaginationCount: number;
   readingSpeedAverage: number;
   thumbnailWidth: number;
 }
