@@ -58,16 +58,13 @@ const { name: _name } = Astro.params as Params;
 <LayoutPaginate
   title="Categories"
   breadcrumbs={['Explore', `Category: ${categoryItem.title}`]}
+  headingTitle={categoryItem.title}
+  headingSubtitle={{
+    title: 'Category',
+    label: `${categoryItemsLength} ${singularOrPlural(categoryItemsLength, 'post', 'posts')}`,
+  }}
   href={categoryItem.href}
   paginatePage={page}
 >
-  <HeadingFancy
-    title={categoryItem.title}
-    subtitle={{
-      title: 'Category',
-      label: `${categoryItemsLength} ${singularOrPlural(categoryItemsLength, 'post', 'posts')}`,
-    }}
-    tag="h1"
-  />
   <PostsPreviewGrid client:load posts={page.data} />
 </LayoutPaginate>
