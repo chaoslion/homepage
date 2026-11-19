@@ -10,6 +10,6 @@
   const { href, children }: Props = $props();
 </script>
 
-<Anchor {href} class="not-prose link link-underline">
+<Anchor {href} class="not-prose link link-primary">
   {@render children()}
 </Anchor>

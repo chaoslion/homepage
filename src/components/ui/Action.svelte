@@ -18,7 +18,7 @@
   <Spinner class="loading-xs" />
 {:then { data, error }}
   {#if error}
-    <Badge label={error.code} text="ERROR" labelColor="badge-error" />
+    <Badge label={error.code} text="ERROR" classText="badge-error" />
   {:else}
     {@render actionFn(data)}
   {/if}

@@ -34,7 +34,7 @@
   empty-class="select-none bg-error rounded-sm text-error-content px-1 py-2 text-center"
   mark-class="bg-accent text-accent-content px-px py-0 rounded-sm"
   suggest-class="border-b border-base-200 list-none italic space-y-0.5 mb-2"
-  suggest-item-class="rounded-sm cursor-pointer p-1 aria-selected:bg-secondary aria-selected:text-secondary-content hover:bg-secondary hover:text-secondary-content"
+  suggest-item-class="rounded-sm cursor-pointer p-1 aria-selected:bg-primary aria-selected:text-primary-content hover:bg-primary hover:text-primary-content"
   list-class="list-none space-y-0.5"
   option-class="block p-1 rounded-sm cursor-pointer border-base-100 aria-selected:bg-primary aria-selected:text-primary-content hover:bg-primary hover:text-primary-content"
   option-title-class="block font-bold text-lg"

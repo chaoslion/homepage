@@ -61,7 +61,7 @@
         class="aspect-2/1 w-full object-cover transition duration-250 ease-in-out group-hover:grayscale-0 pointer-fine:grayscale"
       />
       <span
-        class="pointer-events-none absolute inset-x-0 bottom-0 bg-linear-to-t from-black/95 via-black/70 to-transparent px-3 pt-16 pb-3 text-sm leading-snug font-semibold text-white [text-shadow:0_1px_3px_rgb(0_0_0/0.8)]"
+        class="pointer-events-none absolute inset-x-0 bottom-0 bg-linear-to-t from-black/95 via-black/75 to-transparent px-3 pt-16 pb-3 text-sm leading-snug font-semibold text-white [text-shadow:0_1px_3px_rgb(0_0_0/0.8)]"
       >
         {post.title}
       </span>

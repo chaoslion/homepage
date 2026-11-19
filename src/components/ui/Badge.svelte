@@ -8,26 +8,27 @@
   interface Props {
     class?: ClassValue;
     label: string;
-    labelColor?: string;
     labelIcon?: string;
     labelIconClass?: ClassValue;
     text: string;
-    textColor?: string;
+    classLabel?: ClassValue;
+    classText?: ClassValue;
   }
   let {
     label,
     text,
-    labelColor = 'badge-ghost',
-    textColor = 'badge-secondary',
     labelIcon,
     class: className = 'badge-sm',
+    classLabel = 'badge-neutral',
+    classText = 'badge-ghost',
   }: Props = $props();
 </script>
 
 <span class="join align-middle">
   <span
     class={[
-      `join-item badge ${labelColor}`,
+      'join-item badge',
+      classLabel,
       className,
       labelIcon ? iconFlex() : undefined,
     ]}
@@ -37,7 +38,7 @@
     {/if}
     {label}
   </span>
-  <span class={[`join-item badge ${textColor}`, className]}>
+  <span class={['join-item badge badge-soft', classText, className]}>
     {text}
   </span>
 </span>

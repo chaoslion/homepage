@@ -3,11 +3,12 @@
   import type { PostsCollectionItem } from '#/types/collections';
   import { siteConfig } from '#content';
 
-  import PostsPreviewCard, {
-    cardCover,
-    cardSummary,
-    cardTime,
-  } from './PostsPreviewCard.svelte';
+  import PostsPreviewCard from './PostsPreviewCard.svelte';
+  import {
+    PreviewCover,
+    PreviewSummary,
+    PreviewTime,
+  } from './PostsPreviewCardParts';
 
   interface Props {
     post: PostsCollectionItem;
@@ -18,19 +19,19 @@
 
 <Anchor
   href={post.href}
-  class={['group mx-auto block w-full', siteConfig.posts.previewCoverClass]}
+  class={['group mx-auto w-full', siteConfig.posts.previewCoverClass]}
 >
   <PostsPreviewCard>
     {#snippet image()}
       <figure class="[overflow-anchor:none]">
-        {@render cardCover(post)}
+        <PreviewCover {post} />
       </figure>
     {/snippet}
 
-    {@render cardTime(post)}
+    <PreviewTime {post} />
     <h2 class="card-title group-hover:text-primary transition-colors">
       {post.title}
     </h2>
-    {@render cardSummary(post)}
+    <PreviewSummary {post} />
   </PostsPreviewCard>
 </Anchor>

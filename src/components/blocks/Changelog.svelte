@@ -60,10 +60,7 @@
           </li>
           {#if repoUrl}
             <li>
-              <Anchor
-                href={repoUrl}
-                class={['link link-underline', iconFlex()]}
-              >
+              <Anchor href={repoUrl} class={['link link-primary', iconFlex()]}>
                 <Icon name="mdi--code" size="lg" />
                 {item.hash_short}
               </Anchor>

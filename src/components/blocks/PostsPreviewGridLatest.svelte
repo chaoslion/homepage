@@ -6,30 +6,26 @@
   import PostsPreviewCardSingle from './PostsPreviewCardSingle.svelte';
 
   interface Props {
-    /** Newest first. */
     posts: PostsCollectionItem[];
-    /** Maximum number of grid cells (a carousel counts as one). */
-    limit?: number;
+    limit: number;
   }
-  let { posts, limit = Infinity }: Props = $props();
+  let { posts, limit }: Props = $props();
 
-  // Index page "latest posts": one grid cell per post, except consecutive
-  // posts of the same series, which collapse into one carousel (latest first).
-  const groups = $derived.by(() => {
-    const out: PostsCollectionItem[][] = [];
-    for (const post of posts) {
-      const prev = out.at(-1);
+  const postsBySeriesBurst = $derived.by(() => {
+    const result: PostsCollectionItem[][] = [];
+    for (const post of posts.filter((post) => !post.sticky)) {
+      const prev = result.at(-1);
       const sameSeries =
         !!post.series && prev?.[0]!.series?.id === post.series.id;
       if (sameSeries) prev!.push(post);
-      else out.push([post]);
+      else result.push([post]);
     }
-    return out.slice(0, limit);
+    return result;
   });
 </script>
 
 <Grid>
-  {#each groups as group (group[0]!.slug)}
+  {#each postsBySeriesBurst.slice(0, limit) as group (group[0]!.slug)}
     {#if group.length === 1}
       <PostsPreviewCardSingle post={group[0]!} />
     {:else}

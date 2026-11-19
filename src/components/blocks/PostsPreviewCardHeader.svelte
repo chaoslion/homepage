@@ -1,12 +1,13 @@
 <script lang="ts">
   import type { PostsCollectionItem } from '#/types/collections';
 
-  import PostsPreviewCard, {
-    cardMeta,
-    cardSummary,
-    cardTags,
-    cardTime,
-  } from './PostsPreviewCard.svelte';
+  import PostsPreviewCard from './PostsPreviewCard.svelte';
+  import {
+    PreviewMeta,
+    PreviewSummary,
+    PreviewTags,
+    PreviewTime,
+  } from './PostsPreviewCardParts';
 
   interface Props {
     post: PostsCollectionItem;
@@ -16,8 +17,8 @@
 </script>
 
 <PostsPreviewCard>
-  {@render cardMeta(post)}
-  {@render cardTime(post)}
-  {@render cardSummary(post)}
-  {@render cardTags(post, false)}
+  <PreviewMeta {post} />
+  <PreviewTime {post} />
+  <PreviewSummary {post} />
+  <PreviewTags {post} />
 </PostsPreviewCard>
