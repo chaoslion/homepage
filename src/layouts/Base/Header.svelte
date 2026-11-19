@@ -14,7 +14,12 @@
         class="flex gap-2 opacity-50 transition-opacity duration-200 ease-out group-hover:opacity-100"
       >
         {#each Object.entries(siteConfig.build.repos) as [repo, item]}
-          <Badge label={repo} text={item.release} textColor="badge-primary" />
+          <Badge
+            label={repo}
+            text={item.release}
+            classText="badge-secondary"
+            classLabel="badge-primary"
+          />
         {/each}
       </div>
     </Anchor>

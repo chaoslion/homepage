@@ -20,7 +20,7 @@ import Base from './Base.astro';
 import Container from './Base/Container.svelte';
 import ContainerConstrain from './Base/ContainerConstrain.svelte';
 import PostIndexList from './Post/IndexList.svelte';
-import PostPaginate from './Post/Paginate.svelte';
+import PostPrevNext from './Post/PrevNext.svelte';
 import PostResourcesList from './Post/ResourcesList.svelte';
 import PostSeriesList from './Post/SeriesList.svelte';
 import PostWrapperCustomAsciinema from './Post/Wrapper/CustomAsciinema.astro';
@@ -214,7 +214,7 @@ finalHeadingLinks.push(...headingLinks);
 
   <Container>
     <ContainerConstrain prose={true}>
-      <PostPaginate
+      <PostPrevNext
         prevPost={prevPost}
         nextPost={nextPost}
         prevPostLimit={prevPostLimit}

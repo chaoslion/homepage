@@ -15,7 +15,6 @@
     {@const activeSeriesItem = item.id === post.id}
     <li
       class="list-row"
-      class:opacity-25={activeSeriesItem}
       class:border={activeSeriesItem}
       class:border-primary={activeSeriesItem}
     >
