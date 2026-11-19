@@ -1,31 +1,48 @@
 ---
 import type { Page } from 'astro';
 
+import Paginate from '#/components/blocks/Paginate.svelte';
+import { HeadingFancy } from '#/components/ui';
+import type { HeadingFancySubtitleProps } from '#/types/components';
 import type { BaseProps } from '#/types/site';
 
 import Base from './Base.astro';
 import Container from './Base/Container.svelte';
 import ContainerConstrain from './Base/ContainerConstrain.svelte';
-import Paginate from './Base/Paginate.svelte';
 
 interface Props extends BaseProps {
   href: string;
   paginatePage: Page;
+  headingTitle: string;
+  headingSubtitle?: HeadingFancySubtitleProps;
 }
 
-let { href, paginatePage, ...baseRestProps } = Astro.props as Props;
+let { href, paginatePage, headingTitle, headingSubtitle, ...baseRestProps } =
+  Astro.props as Props;
 ---
 
 <Base {...baseRestProps}>
   <Container>
     <ContainerConstrain>
-      {paginatePage.lastPage > 1 && (
-        <Paginate client:load {href} page={paginatePage} />
+      <HeadingFancy title={headingTitle} tag="h1" subtitle={headingSubtitle} />
+
+      {paginatePage.lastPage > 1 && paginatePage.currentPage > 1 && (
+        <Paginate
+          client:load
+          {href}
+          current={paginatePage.currentPage}
+          total={paginatePage.lastPage}
+        />
       )}
       <slot />
 
       {paginatePage.lastPage > 1 && (
-        <Paginate client:visible {href} page={paginatePage} />
+        <Paginate
+          client:visible
+          {href}
+          current={paginatePage.currentPage}
+          total={paginatePage.lastPage}
+        />
       )}
     </ContainerConstrain>
   </Container>
