@@ -24,11 +24,11 @@ typeCheckingMode = "standard"
 [tool.hatch.build.targets.wheel]
 packages = ["content/content"]
 
-[tool.uv.workspace]
-members = [
-    "content/blog/posts/2026/05-07-python-lazy-imports/assets",
-]
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "tuna>=0.5.15",
+]
