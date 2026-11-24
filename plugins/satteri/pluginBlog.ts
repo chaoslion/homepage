@@ -16,8 +16,8 @@ import {
   nodeExpectAttribute,
   nodeExpectResourceAttribute,
   nodeExpectTextLabel,
+  nodeLinkTextLabel,
   nodeOptionalIdAttribute,
-  nodeOptionalTextLabel,
 } from './_internal/helper';
 import { MathInlineAsciiMathPrefix, renderMathJax } from './_internal/math';
 import {
@@ -172,7 +172,7 @@ export const pluginBlog = (blogPath: string, blogImagesDirectory?: string) =>
         const linkPrefixMatch = href.match(linkPrefixRE);
         if (!linkPrefixMatch) continue;
         const attributes = [];
-        const label = nodeOptionalTextLabel(node);
+        const label = nodeLinkTextLabel(node, ctx);
         if (label) {
           attributes.push({
             type: 'mdxJsxAttribute' as const,

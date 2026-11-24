@@ -60,6 +60,19 @@ export function nodeOptionalTextLabel(
   return node.children[0].value.trim();
 }
 
+export function nodeLinkTextLabel(node: any, ctx: any): string | undefined {
+  if (!node.children || node.children.length === 0) return undefined;
+  const label = nodeOptionalTextLabel(node);
+  if (!label) {
+    throw new ErrorBlogInvalidNode(
+      node,
+      ctx,
+      'link text must be plain text or empty',
+    );
+  }
+  return label;
+}
+
 export function nodeExpectTextLabel(node: any, ctx: any): string {
   const label = nodeOptionalTextLabel(node);
   if (!label) throw new ErrorBlogRequiredLabel(node, ctx);
