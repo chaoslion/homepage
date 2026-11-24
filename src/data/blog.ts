@@ -46,7 +46,7 @@ function getResourceCollectionItem(
   return {
     id: i.id,
     href: finalHref,
-    label: i.data.label ?? string.titleCase(i.id),
+    label: i.data.label,
     forceListing: i.data.forceListing,
   };
 }
@@ -88,8 +88,17 @@ export async function getResourcesCollection(): Promise<
   Map<string, ResourceCollectionItem>
 > {
   const collection = await getCollection('blog-resources');
+  const idByLabel = new Map<string, string>();
   return collection.reduce((map, item) => {
-    map.set(item.id, getResourceCollectionItem(item));
+    const resource = getResourceCollectionItem(item);
+    const duplicate = idByLabel.get(resource.label);
+    if (duplicate) {
+      throw new Error(
+        `Resource label "${resource.label}" is used by both ${duplicate} and ${resource.id}`,
+      );
+    }
+    idByLabel.set(resource.label, resource.id);
+    map.set(item.id, resource);
     return map;
   }, new Map<string, ResourceCollectionItem>());
 }
@@ -135,9 +144,23 @@ async function renderBlogPostCollection(
     .remarkPluginFrontmatter[BlogPluginDataKey] as BlogPluginData | undefined;
 
   const hashProduced = new Set<string>(blogPluginData?.hashProduced ?? []);
-  // const labelsConsumed = new Set<string>(
-  //   blogPluginData.labelsConsumed,
-  // );
+
+  // an inline URL that is also a resource must use res:// instead
+  const normalizeHref = (href: string) => href.replace(/\/+$/, '');
+  const resourceIdByHref = new Map(
+    [...(await getResourcesCollection()).values()].map((r) => [
+      normalizeHref(r.href),
+      r.id,
+    ]),
+  );
+  for (const href of Object.keys(blogPluginData?.externalLinksConsumed ?? {})) {
+    const resourceId = resourceIdByHref.get(normalizeHref(href));
+    if (resourceId) {
+      throw new Error(
+        `${item.id}: ${href} is in resources.yaml, use res://${resourceId}`,
+      );
+    }
+  }
 
   return {
     artifact: postArtifact,

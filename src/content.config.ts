@@ -9,8 +9,11 @@ const postsIndexFilename = 'index.mdx';
 
 const resourceItemSchema = z
   .object({
-    href: z.url(),
-    label: nonEmptyString.optional(),
+    href: z.url({
+      protocol: /^(https|file)$/,
+      error: 'href must start with https:// or file://',
+    }),
+    label: nonEmptyString,
     forceListing: z.boolean().optional().default(false),
   })
   .strict();
